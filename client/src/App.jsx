@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import AuctionCard from "./components/AuctionCard";
+import { auctions } from "./data/auctions";
 
 export default function App() {
   const [dark, setDark] = useState(() => {
@@ -21,16 +23,10 @@ export default function App() {
         {dark ? "حالت روشن" : "حالت تاریک"}
       </button>
 
-      <div className="max-w-sm overflow-hidden rounded-2xl border border-line bg-surface">
-        <div className="h-40 bg-line" />
-        <div className="space-y-3 p-4">
-          <h2 className="font-bold">ساعت مچی کلاسیک رترو</h2>
-          <p className="text-2xl font-bold text-primary">۱۲٬۵۰۰٬۰۰۰ تومان</p>
-          <p className="text-sm text-muted">۱۲ پیشنهاد ثبت شده</p>
-          <button className="w-full rounded-xl bg-btn py-3 font-bold text-white">
-            ثبت پیشنهاد
-          </button>
-        </div>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {auctions.map((a) => (
+          <AuctionCard key={a.id} auction={a} />
+        ))}
       </div>
     </div>
   );

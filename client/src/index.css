@@ -11,6 +11,9 @@
   --line: #e2e8f0;
   --primary: #1e3a8a;
   --btn: #1e3a8a;
+  --primary-soft: #dbeafe;
+  --danger: #dc2626;
+  --danger-soft: #fee2e2;
 }
 
 .dark {
@@ -21,6 +24,9 @@
   --line: #26334d;
   --primary: #93c5fd;
   --btn: #3b6fe0;
+  --primary-soft: #1e2f5c;
+  --danger: #f87171;
+  --danger-soft: #3b1517;
 }
 
 @theme inline {
@@ -32,6 +38,9 @@
   --color-primary: var(--primary);
   --color-btn: var(--btn);
   --font-sans: "Vazirmatn", system-ui, sans-serif;
+  --color-primary-soft: var(--primary-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
 }
 
 body {
