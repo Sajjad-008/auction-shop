@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Gavel, House, List, X } from "lucide-react";
+import { CircleDollarSign, Gavel, House, List, X } from "lucide-react";
 import { categories } from "../data/categories";
 
 function Item({ to, end, icon: Icon, label, count, onClick }) {
@@ -65,6 +65,13 @@ export default function Sidebar({ counts, open, onClose }) {
           icon={List}
           label="مزایده‌های فعال"
           count={counts.active}
+          onClick={onClose}
+        />
+        <Item
+          to="/my-bids"
+          icon={CircleDollarSign}
+          label="پیشنهادهای من"
+          count={counts.myBids}
           onClick={onClose}
         />
 

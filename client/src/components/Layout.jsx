@@ -3,7 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import { categories } from "../data/categories";
-import { isEnded } from "../utils/auction";
+import { getMyStatus, isEnded } from "../utils/auction";
 
 export default function Layout({ auctions, placeBid }) {
   const { pathname } = useLocation();
@@ -19,13 +19,17 @@ export default function Layout({ auctions, placeBid }) {
     localStorage.setItem("theme", dark ? "dark" : "light");
   }, [dark]);
 
-  const counts = { active: auctions.filter((a) => !isEnded(a)).length };
+  const counts = {
+    active: auctions.filter((a) => !isEnded(a)).length,
+    myBids: auctions.filter((a) => getMyStatus(a)).length,
+  };
   categories.forEach((c) => {
     counts[c.key] = auctions.filter((a) => a.category === c.key).length;
   });
 
   let title = "همه مزایده‌ها";
   if (pathname === "/active") title = "مزایده‌های فعال";
+  else if (pathname === "/my-bids") title = "پیشنهادهای من";
   else if (pathname.startsWith("/category/"))
     title =
       categories.find((c) => c.key === pathname.split("/")[2])?.label ??
