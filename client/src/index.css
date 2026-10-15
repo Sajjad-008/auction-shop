@@ -14,6 +14,9 @@
   --primary-soft: #dbeafe;
   --danger: #dc2626;
   --danger-soft: #fee2e2;
+  --hover: #f1f5f9;
+  --btn-hover: #172554;
+  --btn-active: #0f1b45;
 }
 
 .dark {
@@ -27,6 +30,9 @@
   --primary-soft: #1e2f5c;
   --danger: #f87171;
   --danger-soft: #3b1517;
+  --hover: #1a2540;
+  --btn-hover: #5a87ea;
+  --btn-active: #2f5bc4;
 }
 
 @theme inline {
@@ -41,9 +47,17 @@
   --color-primary-soft: var(--primary-soft);
   --color-danger: var(--danger);
   --color-danger-soft: var(--danger-soft);
+  --color-hover: var(--hover);
+  --color-btn-hover: var(--btn-hover);
+  --color-btn-active: var(--btn-active);
 }
 
 body {
   background-color: var(--bg);
   color: var(--fg);
+}
+@layer base {
+  button:not(:disabled) {
+    cursor: pointer;
+  }
 }
