@@ -1,15 +1,20 @@
+import { NavLink } from "react-router-dom";
 import { Gavel, House, List, X } from "lucide-react";
 import { categories } from "../data/categories";
 
-function Item({ icon: Icon, label, count, active, onClick }) {
+function Item({ to, end, icon: Icon, label, count, onClick }) {
   return (
-    <button
+    <NavLink
+      to={to}
+      end={end}
       onClick={onClick}
-      className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors active:bg-primary-soft ${
-        active
-          ? "bg-primary-soft font-bold text-primary"
-          : "text-fg hover:bg-hover"
-      }`}
+      className={({ isActive }) =>
+        `flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors active:bg-primary-soft ${
+          isActive
+            ? "bg-primary-soft font-bold text-primary"
+            : "text-fg hover:bg-hover"
+        }`
+      }
     >
       <Icon size={20} />
       <span className="flex-1 text-right">{label}</span>
@@ -18,16 +23,11 @@ function Item({ icon: Icon, label, count, active, onClick }) {
           {count.toLocaleString("fa-IR")}
         </span>
       )}
-    </button>
+    </NavLink>
   );
 }
 
-export default function Sidebar({ section, onSelect, counts, open, onClose }) {
-  const pick = (key) => {
-    onSelect(key);
-    onClose();
-  };
-
+export default function Sidebar({ counts, open, onClose }) {
   return (
     <>
       {open && (
@@ -59,29 +59,24 @@ export default function Sidebar({ section, onSelect, counts, open, onClose }) {
         </div>
 
         <p className="px-3 pt-2 text-xs font-bold text-muted">منو</p>
+        <Item to="/" end icon={House} label="خانه" onClick={onClose} />
         <Item
-          icon={House}
-          label="خانه"
-          active={section === "home"}
-          onClick={() => pick("home")}
-        />
-        <Item
+          to="/active"
           icon={List}
           label="مزایده‌های فعال"
           count={counts.active}
-          active={section === "active"}
-          onClick={() => pick("active")}
+          onClick={onClose}
         />
 
         <p className="px-3 pt-4 text-xs font-bold text-muted">دسته‌بندی‌ها</p>
         {categories.map((c) => (
           <Item
             key={c.key}
+            to={`/category/${c.key}`}
             icon={c.icon}
             label={c.label}
             count={counts[c.key]}
-            active={section === c.key}
-            onClick={() => pick(c.key)}
+            onClick={onClose}
           />
         ))}
       </aside>

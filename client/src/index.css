@@ -17,6 +17,10 @@
   --hover: #f1f5f9;
   --btn-hover: #172554;
   --btn-active: #0f1b45;
+  --success: #16a34a;
+  --success-soft: #dcfce7;
+  --warning: #d97706;
+  --warning-soft: #fef3c7;
 }
 
 .dark {
@@ -33,6 +37,10 @@
   --hover: #1a2540;
   --btn-hover: #5a87ea;
   --btn-active: #2f5bc4;
+  --success: #4ade80;
+  --success-soft: #12351f;
+  --warning: #fbbf24;
+  --warning-soft: #3a2a0a;
 }
 
 @theme inline {
@@ -50,6 +58,10 @@
   --color-hover: var(--hover);
   --color-btn-hover: var(--btn-hover);
   --color-btn-active: var(--btn-active);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
 }
 
 body {
