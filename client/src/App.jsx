@@ -1,72 +1,52 @@
-import { useEffect, useState } from "react";
-import Sidebar from "./components/Sidebar";
-import Navbar from "./components/Navbar";
-import AuctionCard from "./components/AuctionCard";
-import { auctions } from "./data/auctions";
-import { categories } from "./data/categories";
-
-const isActive = (a) => new Date(a.endAt) > Date.now();
+import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+import Home from "./pages/Home";
+import AuctionDetail from "./pages/AuctionDetail";
+import { initialAuctions } from "./data/auctions";
+import { getMinNextBid, isEnded, formatToman } from "./utils/auction";
 
 export default function App() {
-  const [section, setSection] = useState("home");
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [dark, setDark] = useState(() => {
-    const saved = localStorage.getItem("theme");
-    if (saved) return saved === "dark";
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
+  const [auctions, setAuctions] = useState(initialAuctions);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-    localStorage.setItem("theme", dark ? "dark" : "light");
-  }, [dark]);
+  const placeBid = (id, amount) => {
+    const a = auctions.find((x) => x.id === id);
+    if (!a) return { ok: false, message: "مزایده پیدا نشد." };
+    if (isEnded(a))
+      return { ok: false, message: "این مزایده پایان یافته است." };
+    if (a.bids[0]?.user === "من")
+      return {
+        ok: false,
+        message: "آخرین پیشنهاد مال خودته. منتظر پیشنهاد بعدی بمون.",
+      };
+    const min = getMinNextBid(a);
+    if (amount < min)
+      return { ok: false, message: `حداقل پیشنهاد ${formatToman(min)} است.` };
 
-  const counts = { active: auctions.filter(isActive).length };
-  categories.forEach((c) => {
-    counts[c.key] = auctions.filter((a) => a.category === c.key).length;
-  });
-
-  let list = auctions;
-  if (section === "active") list = auctions.filter(isActive);
-  else if (section !== "home")
-    list = auctions.filter((a) => a.category === section);
-
-  const titles = {
-    home: "همه مزایده‌ها",
-    active: "مزایده‌های فعال",
-    ...Object.fromEntries(categories.map((c) => [c.key, c.label])),
+    setAuctions((prev) =>
+      prev.map((x) =>
+        x.id === id
+          ? {
+              ...x,
+              bids: [
+                { user: "من", amount, at: new Date().toISOString() },
+                ...x.bids,
+              ],
+            }
+          : x,
+      ),
+    );
+    return { ok: true, message: "پیشنهادت ثبت شد." };
   };
 
   return (
-    <div className="flex min-h-screen gap-4 p-4">
-      <Sidebar
-        section={section}
-        onSelect={setSection}
-        counts={counts}
-        open={menuOpen}
-        onClose={() => setMenuOpen(false)}
-      />
-
-      <div className="flex min-w-0 flex-1 flex-col gap-4">
-        <Navbar
-          title={titles[section]}
-          dark={dark}
-          onToggleTheme={() => setDark(!dark)}
-          onOpenMenu={() => setMenuOpen(true)}
-        />
-
-        <main>
-          {list.length === 0 ? (
-            <p className="text-muted">مزایده‌ای در این بخش نیست.</p>
-          ) : (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-              {list.map((a) => (
-                <AuctionCard key={a.id} auction={a} />
-              ))}
-            </div>
-          )}
-        </main>
-      </div>
-    </div>
+    <Routes>
+      <Route element={<Layout auctions={auctions} placeBid={placeBid} />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/active" element={<Home />} />
+        <Route path="/category/:key" element={<Home />} />
+        <Route path="/auction/:id" element={<AuctionDetail />} />
+      </Route>
+    </Routes>
   );
 }

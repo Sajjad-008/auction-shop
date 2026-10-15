@@ -1,35 +1,50 @@
+import { Link } from "react-router-dom";
 import CountdownTimer from "./CountdownTimer";
+import { getCurrentPrice, isEnded, formatToman } from "../utils/auction";
 
 export default function AuctionCard({ auction }) {
-  const { title, currentPrice, bidCount, endAt } = auction;
-  const ended = new Date(endAt) <= Date.now();
+  const ended = isEnded(auction);
+  const to = `/auction/${auction.id}`;
 
   return (
     <div className="overflow-hidden rounded-2xl border border-line bg-surface">
-      <div className="h-44 bg-line" />
+      <Link to={to}>
+        <div className="h-44 bg-line" />
+      </Link>
       <div className="space-y-3 p-4">
-        <h2 className="font-bold">{title}</h2>
+        <Link to={to} className="block font-bold hover:text-primary">
+          {auction.title}
+        </Link>
 
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs text-muted">قیمت فعلی</p>
             <p className="text-xl font-bold text-primary">
-              {currentPrice.toLocaleString("fa-IR")} تومان
+              {formatToman(getCurrentPrice(auction))}
             </p>
           </div>
-          <CountdownTimer endAt={endAt} />
+          <CountdownTimer endAt={auction.endAt} />
         </div>
 
         <p className="text-sm text-muted">
-          {bidCount.toLocaleString("fa-IR")} پیشنهاد ثبت شده
+          {auction.bids.length.toLocaleString("fa-IR")} پیشنهاد ثبت شده
         </p>
 
-        <button
-          disabled={ended}
-          className="w-full rounded-xl bg-btn py-3 font-bold text-white disabled:cursor-not-allowed disabled:bg-line disabled:text-muted"
-        >
-          {ended ? "مزایده پایان یافته" : "ثبت پیشنهاد"}
-        </button>
+        {ended ? (
+          <button
+            disabled
+            className="w-full rounded-xl bg-line py-3 font-bold text-muted disabled:cursor-not-allowed"
+          >
+            مزایده پایان یافته
+          </button>
+        ) : (
+          <Link
+            to={to}
+            className="block w-full rounded-xl bg-btn py-3 text-center font-bold text-white transition-colors hover:bg-btn-hover active:bg-btn-active"
+          >
+            ثبت پیشنهاد
+          </Link>
+        )}
       </div>
     </div>
   );
