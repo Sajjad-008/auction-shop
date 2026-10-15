@@ -1,10 +1,11 @@
 import { Link, useParams, useOutletContext } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import AuctionImage from "../components/AuctionImage";
 import CountdownTimer from "../components/CountdownTimer";
 import StatusBadge from "../components/StatusBadge";
 import BidForm from "../components/BidForm";
 import BidHistory from "../components/BidHistory";
-import { getCurrentPrice, isEnded, formatToman } from "../utils/auction";
+import { getCurrentPrice, getMyStatus, formatToman } from "../utils/auction";
 
 export default function AuctionDetail() {
   const { id } = useParams();
@@ -21,12 +22,7 @@ export default function AuctionDetail() {
       </div>
     );
 
-  const ended = isEnded(auction);
-  const iLead = auction.bids[0]?.user === "من";
-  const iBid = auction.bids.some((b) => b.user === "من");
-  let status = null;
-  if (iLead) status = ended ? "won" : "leading";
-  else if (iBid) status = "outbid";
+  const status = getMyStatus(auction);
 
   return (
     <div className="space-y-4">
@@ -39,7 +35,11 @@ export default function AuctionDetail() {
 
       <div className="grid gap-6 lg:grid-cols-[1fr_24rem]">
         <div className="space-y-6">
-          <div className="h-72 rounded-2xl bg-line sm:h-96" />
+          <AuctionImage
+            src={auction.image}
+            alt={auction.title}
+            className="h-72 w-full rounded-2xl sm:h-96"
+          />
           <section className="space-y-2">
             <h2 className="text-lg font-bold">توضیحات</h2>
             <p className="leading-8 text-muted">{auction.description}</p>

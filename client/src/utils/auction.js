@@ -1,3 +1,5 @@
+export const ME = "من";
+
 export const getCurrentPrice = (a) =>
   a.bids.length ? a.bids[0].amount : a.startPrice;
 
@@ -21,3 +23,14 @@ export const timeAgo = (iso) => {
   if (min < 60) return `${min.toLocaleString("fa-IR")} دقیقه پیش`;
   return `${Math.floor(min / 60).toLocaleString("fa-IR")} ساعت پیش`;
 };
+
+// وضعیت من در یک مزایده: null / leading / outbid / won / lost
+export const getMyStatus = (a) => {
+  if (!a.bids.some((b) => b.user === ME)) return null;
+  const top = a.bids[0].user === ME;
+  if (isEnded(a)) return top ? "won" : "lost";
+  return top ? "leading" : "outbid";
+};
+
+export const getMyBestBid = (a) =>
+  Math.max(...a.bids.filter((b) => b.user === ME).map((b) => b.amount));
