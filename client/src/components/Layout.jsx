@@ -1,23 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import { categories } from "../data/categories";
 import { getMyStatus, isEnded } from "../utils/auction";
 
-export default function Layout({ auctions, placeBid }) {
+export default function Layout({
+  auctions,
+  placeBid,
+  user,
+  onLogout,
+  dark,
+  onToggleTheme,
+}) {
   const { pathname } = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [dark, setDark] = useState(() => {
-    const saved = localStorage.getItem("theme");
-    if (saved) return saved === "dark";
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-    localStorage.setItem("theme", dark ? "dark" : "light");
-  }, [dark]);
 
   const counts = {
     active: auctions.filter((a) => !isEnded(a)).length,
@@ -40,6 +37,8 @@ export default function Layout({ auctions, placeBid }) {
     <div className="flex min-h-screen gap-4 p-4">
       <Sidebar
         counts={counts}
+        user={user}
+        onLogout={onLogout}
         open={menuOpen}
         onClose={() => setMenuOpen(false)}
       />
@@ -48,11 +47,11 @@ export default function Layout({ auctions, placeBid }) {
         <Navbar
           title={title}
           dark={dark}
-          onToggleTheme={() => setDark(!dark)}
+          onToggleTheme={onToggleTheme}
           onOpenMenu={() => setMenuOpen(true)}
         />
         <main>
-          <Outlet context={{ auctions, placeBid }} />
+          <Outlet context={{ auctions, placeBid, user }} />
         </main>
       </div>
     </div>

@@ -1,5 +1,5 @@
-import { NavLink } from "react-router-dom";
-import { CircleDollarSign, Gavel, House, List, X } from "lucide-react";
+import { Link, NavLink } from "react-router-dom";
+import { CircleDollarSign, Gavel, House, List, LogOut, X } from "lucide-react";
 import { categories } from "../data/categories";
 
 function Item({ to, end, icon: Icon, label, count, onClick }) {
@@ -27,7 +27,7 @@ function Item({ to, end, icon: Icon, label, count, onClick }) {
   );
 }
 
-export default function Sidebar({ counts, open, onClose }) {
+export default function Sidebar({ counts, user, onLogout, open, onClose }) {
   return (
     <>
       {open && (
@@ -86,6 +86,49 @@ export default function Sidebar({ counts, open, onClose }) {
             onClick={onClose}
           />
         ))}
+
+        <div className="mt-auto pt-4">
+          {user ? (
+            <div className="flex items-center gap-3 rounded-xl bg-bg p-3">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary-soft font-bold text-primary">
+                {user.name.charAt(0)}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-bold">{user.name}</p>
+                <p dir="ltr" className="truncate text-right text-xs text-muted">
+                  {user.email}
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  onLogout();
+                  onClose();
+                }}
+                aria-label="خروج"
+                className="rounded-lg p-1.5 text-danger transition-colors hover:bg-hover active:bg-danger-soft"
+              >
+                <LogOut size={18} />
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <Link
+                to="/login"
+                onClick={onClose}
+                className="block rounded-xl bg-btn py-2.5 text-center text-sm font-bold text-white transition-colors hover:bg-btn-hover active:bg-btn-active"
+              >
+                ورود
+              </Link>
+              <Link
+                to="/signup"
+                onClick={onClose}
+                className="block rounded-xl border border-line py-2.5 text-center text-sm font-medium transition-colors hover:bg-hover active:bg-primary-soft"
+              >
+                ثبت‌نام
+              </Link>
+            </div>
+          )}
+        </div>
       </aside>
     </>
   );
