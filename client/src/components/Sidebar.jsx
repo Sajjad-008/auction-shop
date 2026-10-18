@@ -1,5 +1,13 @@
 import { Link, NavLink } from "react-router-dom";
-import { CircleDollarSign, Gavel, House, List, LogOut, X } from "lucide-react";
+import {
+  CircleDollarSign,
+  Gavel,
+  Heart,
+  House,
+  List,
+  LogOut,
+  X,
+} from "lucide-react";
 import { categories } from "../data/categories";
 
 function Item({ to, end, icon: Icon, label, count, onClick }) {
@@ -72,6 +80,13 @@ export default function Sidebar({ counts, user, onLogout, open, onClose }) {
           icon={CircleDollarSign}
           label="پیشنهادهای من"
           count={counts.myBids}
+          onClick={onClose}
+        />
+        <Item
+          to="/favorites"
+          icon={Heart}
+          label="علاقه‌مندی‌ها"
+          count={counts.favorites}
           onClick={onClose}
         />
 

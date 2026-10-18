@@ -1,27 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import AuctionDetail from "./pages/AuctionDetail";
 import MyBids from "./pages/MyBids";
+import Favorites from "./pages/Favorites";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import useTheme from "./hooks/useTheme";
 import { initialAuctions } from "./data/auctions";
 import { getMinNextBid, isEnded, formatToman, ME } from "./utils/auction";
 
-const loadUser = () => {
+const load = (key, fallback) => {
   try {
-    return JSON.parse(localStorage.getItem("user")) ?? null;
+    return JSON.parse(localStorage.getItem(key)) ?? fallback;
   } catch {
-    return null;
+    return fallback;
   }
 };
 
 export default function App() {
   const [auctions, setAuctions] = useState(initialAuctions);
-  const [user, setUser] = useState(loadUser);
+  const [user, setUser] = useState(() => load("user", null));
+  const [favorites, setFavorites] = useState(() => load("favorites", []));
   const [dark, toggleTheme] = useTheme();
+
+  useEffect(() => {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  }, [favorites]);
 
   const login = (u) => {
     setUser(u);
@@ -31,6 +37,11 @@ export default function App() {
     setUser(null);
     localStorage.removeItem("user");
   };
+
+  const toggleFavorite = (id) =>
+    setFavorites((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
 
   const placeBid = (id, amount) => {
     const a = auctions.find((x) => x.id === id);
@@ -82,6 +93,8 @@ export default function App() {
             placeBid={placeBid}
             user={user}
             onLogout={logout}
+            favorites={favorites}
+            toggleFavorite={toggleFavorite}
             {...themeProps}
           />
         }
@@ -90,6 +103,7 @@ export default function App() {
         <Route path="/active" element={<Home />} />
         <Route path="/category/:key" element={<Home />} />
         <Route path="/my-bids" element={<MyBids />} />
+        <Route path="/favorites" element={<Favorites />} />
         <Route path="/auction/:id" element={<AuctionDetail />} />
       </Route>
     </Routes>

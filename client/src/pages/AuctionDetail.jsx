@@ -2,6 +2,7 @@ import { Link, useParams, useOutletContext } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import AuctionImage from "../components/AuctionImage";
 import CountdownTimer from "../components/CountdownTimer";
+import FavoriteButton from "../components/FavoriteButton";
 import StatusBadge from "../components/StatusBadge";
 import BidForm from "../components/BidForm";
 import BidHistory from "../components/BidHistory";
@@ -51,7 +52,13 @@ export default function AuctionDetail() {
         </div>
 
         <aside className="h-fit space-y-4 rounded-2xl border border-line bg-surface p-5 lg:sticky lg:top-24">
-          <h2 className="text-2xl font-bold">{auction.title}</h2>
+          <div className="flex items-start justify-between gap-3">
+            <h2 className="text-2xl font-bold">{auction.title}</h2>
+            <FavoriteButton
+              auctionId={auction.id}
+              className="shrink-0 rounded-xl border border-line p-2"
+            />
+          </div>
           <div className="flex items-center justify-between">
             <StatusBadge status={status} />
             <CountdownTimer endAt={auction.endAt} />

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import AuctionImage from "./AuctionImage";
 import CountdownTimer from "./CountdownTimer";
+import FavoriteButton from "./FavoriteButton";
 import { getCurrentPrice, isEnded, formatToman } from "../utils/auction";
 
 export default function AuctionCard({ auction }) {
@@ -9,13 +10,20 @@ export default function AuctionCard({ auction }) {
 
   return (
     <div className="overflow-hidden rounded-2xl border border-line bg-surface">
-      <Link to={to} className="block">
-        <AuctionImage
-          src={auction.image}
-          alt={auction.title}
-          className="h-44 w-full"
+      <div className="relative">
+        <Link to={to} className="block">
+          <AuctionImage
+            src={auction.image}
+            alt={auction.title}
+            className="h-44 w-full"
+          />
+        </Link>
+        <FavoriteButton
+          auctionId={auction.id}
+          className="absolute left-3 top-3 rounded-full border border-line bg-surface/90 p-2 backdrop-blur"
         />
-      </Link>
+      </div>
+
       <div className="space-y-3 p-4">
         <Link to={to} className="block font-bold hover:text-primary">
           {auction.title}
