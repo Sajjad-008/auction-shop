@@ -10,6 +10,8 @@ export default function Layout({
   placeBid,
   user,
   onLogout,
+  favorites,
+  toggleFavorite,
   dark,
   onToggleTheme,
 }) {
@@ -19,6 +21,9 @@ export default function Layout({
   const counts = {
     active: auctions.filter((a) => !isEnded(a)).length,
     myBids: auctions.filter((a) => getMyStatus(a)).length,
+    favorites: user
+      ? auctions.filter((a) => favorites.includes(a.id)).length
+      : 0,
   };
   categories.forEach((c) => {
     counts[c.key] = auctions.filter((a) => a.category === c.key).length;
@@ -27,6 +32,7 @@ export default function Layout({
   let title = "همه مزایده‌ها";
   if (pathname === "/active") title = "مزایده‌های فعال";
   else if (pathname === "/my-bids") title = "پیشنهادهای من";
+  else if (pathname === "/favorites") title = "علاقه‌مندی‌ها";
   else if (pathname.startsWith("/category/"))
     title =
       categories.find((c) => c.key === pathname.split("/")[2])?.label ??
@@ -51,7 +57,9 @@ export default function Layout({
           onOpenMenu={() => setMenuOpen(true)}
         />
         <main>
-          <Outlet context={{ auctions, placeBid, user }} />
+          <Outlet
+            context={{ auctions, placeBid, user, favorites, toggleFavorite }}
+          />
         </main>
       </div>
     </div>
