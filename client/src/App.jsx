@@ -44,6 +44,7 @@ export default function App() {
     );
 
   const placeBid = (id, amount) => {
+    if (!user) return { ok: false, message: "برای ثبت پیشنهاد اول وارد شو." };
     const a = auctions.find((x) => x.id === id);
     if (!a) return { ok: false, message: "مزایده پیدا نشد." };
     if (isEnded(a))

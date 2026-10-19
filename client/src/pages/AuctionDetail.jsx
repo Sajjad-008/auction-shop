@@ -10,7 +10,7 @@ import { getCurrentPrice, getMyStatus, formatToman } from "../utils/auction";
 
 export default function AuctionDetail() {
   const { id } = useParams();
-  const { auctions, placeBid } = useOutletContext();
+  const { auctions, placeBid, user } = useOutletContext();
   const auction = auctions.find((a) => a.id === Number(id));
 
   if (!auction)
@@ -23,7 +23,7 @@ export default function AuctionDetail() {
       </div>
     );
 
-  const status = getMyStatus(auction);
+  const status = user ? getMyStatus(auction) : null;
 
   return (
     <div className="space-y-4">

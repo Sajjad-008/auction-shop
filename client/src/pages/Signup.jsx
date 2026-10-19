@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import AuthShell from "../components/AuthShell";
 import FormField from "../components/FormField";
 import {
@@ -11,6 +11,7 @@ import {
 
 export default function Signup({ user, onAuth, dark, onToggleTheme }) {
   const navigate = useNavigate();
+  const from = useLocation().state?.from ?? "/";
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -21,7 +22,7 @@ export default function Signup({ user, onAuth, dark, onToggleTheme }) {
   const [touched, setTouched] = useState({});
   const [submitted, setSubmitted] = useState(false);
 
-  if (user) return <Navigate to="/" replace />;
+  if (user) return <Navigate to={from} replace />;
 
   const errors = {
     name: validateName(values.name),
@@ -44,7 +45,7 @@ export default function Signup({ user, onAuth, dark, onToggleTheme }) {
     setSubmitted(true);
     if (Object.values(errors).some(Boolean)) return;
     onAuth({ name: values.name.trim(), email: values.email.trim() });
-    navigate("/");
+    navigate(from, { replace: true });
   };
 
   return (
@@ -56,7 +57,11 @@ export default function Signup({ user, onAuth, dark, onToggleTheme }) {
       footer={
         <>
           حساب داری؟{" "}
-          <Link to="/login" className="font-bold text-primary hover:underline">
+          <Link
+            to="/login"
+            state={{ from }}
+            className="font-bold text-primary hover:underline"
+          >
             وارد شو
           </Link>
         </>

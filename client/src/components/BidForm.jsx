@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link, useLocation, useOutletContext } from "react-router-dom";
 import {
   getMinNextBid,
   isEnded,
@@ -7,6 +8,8 @@ import {
 } from "../utils/auction";
 
 export default function BidForm({ auction, onBid }) {
+  const { user } = useOutletContext();
+  const { pathname } = useLocation();
   const [value, setValue] = useState("");
   const [confirming, setConfirming] = useState(false);
   const [feedback, setFeedback] = useState(null);
@@ -14,6 +17,35 @@ export default function BidForm({ auction, onBid }) {
   const ended = isEnded(auction);
   const min = getMinNextBid(auction);
   const amount = value ? Number(value) : 0;
+
+  if (!user && !ended)
+    return (
+      <div className="space-y-3">
+        <div className="rounded-xl border border-line bg-bg p-4 text-sm">
+          <p className="font-medium">برای ثبت پیشنهاد باید وارد حسابت بشی.</p>
+          <p className="mt-1 text-xs text-muted">
+            حداقل پیشنهاد بعدی: {formatToman(min)}
+          </p>
+        </div>
+        <Link
+          to="/login"
+          state={{ from: pathname }}
+          className="block w-full rounded-xl bg-btn py-3 text-center font-bold text-white transition-colors hover:bg-btn-hover active:bg-btn-active"
+        >
+          ورود برای ثبت پیشنهاد
+        </Link>
+        <p className="text-center text-sm text-muted">
+          حساب نداری؟{" "}
+          <Link
+            to="/signup"
+            state={{ from: pathname }}
+            className="font-bold text-primary hover:underline"
+          >
+            ثبت‌نام کن
+          </Link>
+        </p>
+      </div>
+    );
 
   const handleChange = (e) => {
     setValue(toEnglishDigits(e.target.value));
