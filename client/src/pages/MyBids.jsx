@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
+import { CircleDollarSign } from "lucide-react";
 import AuctionImage from "../components/AuctionImage";
 import CountdownTimer from "../components/CountdownTimer";
 import StatusBadge from "../components/StatusBadge";
@@ -24,8 +25,23 @@ const match = (tab, status) =>
     : status === tab);
 
 export default function MyBids() {
-  const { auctions } = useOutletContext();
+  const { auctions, user } = useOutletContext();
   const [tab, setTab] = useState("all");
+
+  if (!user)
+    return (
+      <div className="flex flex-col items-center gap-3 rounded-2xl border border-line bg-surface py-16 text-center">
+        <CircleDollarSign size={40} className="text-muted" />
+        <p className="text-muted">برای دیدن پیشنهادهات اول وارد شو.</p>
+        <Link
+          to="/login"
+          state={{ from: "/my-bids" }}
+          className="rounded-xl bg-btn px-6 py-2.5 font-bold text-white transition-colors hover:bg-btn-hover active:bg-btn-active"
+        >
+          ورود
+        </Link>
+      </div>
+    );
 
   const mine = auctions
     .map((a) => ({ a, status: getMyStatus(a) }))

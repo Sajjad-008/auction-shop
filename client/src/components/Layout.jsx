@@ -20,7 +20,7 @@ export default function Layout({
 
   const counts = {
     active: auctions.filter((a) => !isEnded(a)).length,
-    myBids: auctions.filter((a) => getMyStatus(a)).length,
+    myBids: user ? auctions.filter((a) => getMyStatus(a)).length : 0,
     favorites: user
       ? auctions.filter((a) => favorites.includes(a.id)).length
       : 0,

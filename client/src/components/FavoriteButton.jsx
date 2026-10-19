@@ -1,16 +1,17 @@
 import { Heart } from "lucide-react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 
 export default function FavoriteButton({ auctionId, className = "" }) {
   const { user, favorites, toggleFavorite } = useOutletContext();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const active = !!user && favorites.includes(auctionId);
   const label = active ? "حذف از علاقه‌مندی‌ها" : "افزودن به علاقه‌مندی‌ها";
 
   const handleClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!user) return navigate("/login");
+    if (!user) return navigate("/login", { state: { from: pathname } });
     toggleFavorite(auctionId);
   };
 

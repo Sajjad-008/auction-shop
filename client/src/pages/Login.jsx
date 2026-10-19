@@ -1,16 +1,17 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import AuthShell from "../components/AuthShell";
 import FormField from "../components/FormField";
 import { validateEmail, validateRequired } from "../utils/validation";
 
 export default function Login({ user, onAuth, dark, onToggleTheme }) {
   const navigate = useNavigate();
+  const from = useLocation().state?.from ?? "/";
   const [values, setValues] = useState({ email: "", password: "" });
   const [touched, setTouched] = useState({});
   const [submitted, setSubmitted] = useState(false);
 
-  if (user) return <Navigate to="/" replace />;
+  if (user) return <Navigate to={from} replace />;
 
   const errors = {
     email: validateEmail(values.email),
@@ -29,7 +30,7 @@ export default function Login({ user, onAuth, dark, onToggleTheme }) {
     if (Object.values(errors).some(Boolean)) return;
     const email = values.email.trim();
     onAuth({ name: email.split("@")[0], email });
-    navigate("/");
+    navigate(from, { replace: true });
   };
 
   return (
@@ -41,7 +42,11 @@ export default function Login({ user, onAuth, dark, onToggleTheme }) {
       footer={
         <>
           حساب نداری؟{" "}
-          <Link to="/signup" className="font-bold text-primary hover:underline">
+          <Link
+            to="/signup"
+            state={{ from }}
+            className="font-bold text-primary hover:underline"
+          >
             ثبت‌نام کن
           </Link>
         </>
