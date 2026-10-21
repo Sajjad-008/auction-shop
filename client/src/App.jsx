@@ -10,6 +10,7 @@ import Signup from "./pages/Signup";
 import useTheme from "./hooks/useTheme";
 import { initialAuctions } from "./data/auctions";
 import { getMinNextBid, isEnded, formatToman, ME } from "./utils/auction";
+import ActiveAuctions from "./pages/ActiveAuctions";
 
 const load = (key, fallback) => {
   try {
@@ -101,7 +102,7 @@ export default function App() {
         }
       >
         <Route path="/" element={<Home />} />
-        <Route path="/active" element={<Home />} />
+        <Route path="/active" element={<ActiveAuctions />} />
         <Route path="/category/:key" element={<Home />} />
         <Route path="/my-bids" element={<MyBids />} />
         <Route path="/favorites" element={<Favorites />} />
