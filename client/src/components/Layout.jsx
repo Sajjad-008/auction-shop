@@ -33,6 +33,7 @@ export default function Layout({
   if (pathname === "/active") title = "مزایده‌های فعال";
   else if (pathname === "/my-bids") title = "پیشنهادهای من";
   else if (pathname === "/favorites") title = "علاقه‌مندی‌ها";
+  else if (pathname === "/search") title = "نتایج جستجو";
   else if (pathname.startsWith("/category/"))
     title =
       categories.find((c) => c.key === pathname.split("/")[2])?.label ??

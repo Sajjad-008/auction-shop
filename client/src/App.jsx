@@ -11,6 +11,7 @@ import useTheme from "./hooks/useTheme";
 import { initialAuctions } from "./data/auctions";
 import { getMinNextBid, isEnded, formatToman, ME } from "./utils/auction";
 import ActiveAuctions from "./pages/ActiveAuctions";
+import SearchResults from "./pages/SearchResults";
 
 const load = (key, fallback) => {
   try {
@@ -106,6 +107,7 @@ export default function App() {
         <Route path="/category/:key" element={<Home />} />
         <Route path="/my-bids" element={<MyBids />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="/search" element={<SearchResults />} />
         <Route path="/auction/:id" element={<AuctionDetail />} />
       </Route>
     </Routes>
