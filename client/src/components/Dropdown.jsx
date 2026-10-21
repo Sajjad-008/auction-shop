@@ -7,6 +7,7 @@ export default function Dropdown({
   options,
   ariaLabel,
   pill = false,
+  bare = false,
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -33,6 +34,11 @@ export default function Dropdown({
     setOpen(false);
   };
 
+  let variant = "rounded-xl border-line bg-surface px-3 py-2";
+  if (pill) variant = "rounded-full border-line bg-surface px-4 py-2";
+  if (bare)
+    variant = "rounded-lg border-transparent bg-transparent px-3 py-2.5";
+
   return (
     <div ref={ref} className="relative inline-block">
       <button
@@ -41,9 +47,7 @@ export default function Dropdown({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={ariaLabel}
-        className={`flex items-center gap-2 whitespace-nowrap border border-line bg-surface text-sm transition-colors hover:bg-hover active:bg-primary-soft ${
-          pill ? "rounded-full px-4 py-2" : "rounded-xl px-3 py-2"
-        }`}
+        className={`flex items-center gap-2 whitespace-nowrap border text-sm transition-colors hover:bg-hover active:bg-primary-soft ${variant}`}
       >
         <span>{current?.label}</span>
         <ChevronDown

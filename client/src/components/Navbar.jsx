@@ -1,8 +1,9 @@
 import { Menu, Moon, Sun } from "lucide-react";
+import SearchBox from "./SearchBox";
 
 export default function Navbar({ title, dark, onToggleTheme, onOpenMenu }) {
   return (
-    <header className="sticky top-4 z-20 flex items-center justify-between rounded-2xl border border-line bg-surface px-6 py-4">
+    <header className="sticky top-4 z-20 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-surface px-4 py-3 sm:px-6 sm:py-4">
       <div className="flex items-center gap-3">
         <button
           onClick={onOpenMenu}
@@ -12,6 +13,10 @@ export default function Navbar({ title, dark, onToggleTheme, onOpenMenu }) {
           <Menu size={24} />
         </button>
         <h1 className="text-xl font-bold">{title}</h1>
+      </div>
+
+      <div className="order-last w-full md:order-none md:w-auto md:max-w-md md:flex-1">
+        <SearchBox />
       </div>
 
       <button
