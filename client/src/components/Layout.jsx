@@ -12,6 +12,7 @@ export default function Layout({
   onLogout,
   favorites,
   toggleFavorite,
+  notifications,
   dark,
   onToggleTheme,
 }) {
@@ -24,6 +25,7 @@ export default function Layout({
     favorites: user
       ? auctions.filter((a) => favorites.includes(a.id)).length
       : 0,
+    notifications: user ? notifications.unread : 0,
   };
   categories.forEach((c) => {
     counts[c.key] = auctions.filter((a) => a.category === c.key).length;
@@ -33,6 +35,7 @@ export default function Layout({
   if (pathname === "/active") title = "مزایده‌های فعال";
   else if (pathname === "/my-bids") title = "پیشنهادهای من";
   else if (pathname === "/favorites") title = "علاقه‌مندی‌ها";
+  else if (pathname === "/notifications") title = "اعلان‌ها";
   else if (pathname === "/search") title = "نتایج جستجو";
   else if (pathname.startsWith("/category/"))
     title =
@@ -56,10 +59,19 @@ export default function Layout({
           dark={dark}
           onToggleTheme={onToggleTheme}
           onOpenMenu={() => setMenuOpen(true)}
+          user={user}
+          notifications={notifications}
         />
         <main>
           <Outlet
-            context={{ auctions, placeBid, user, favorites, toggleFavorite }}
+            context={{
+              auctions,
+              placeBid,
+              user,
+              favorites,
+              toggleFavorite,
+              notifications,
+            }}
           />
         </main>
       </div>

@@ -21,7 +21,9 @@ export const timeAgo = (iso) => {
   const min = Math.floor((Date.now() - new Date(iso)) / 60000);
   if (min < 1) return "همین الان";
   if (min < 60) return `${min.toLocaleString("fa-IR")} دقیقه پیش`;
-  return `${Math.floor(min / 60).toLocaleString("fa-IR")} ساعت پیش`;
+  const hours = Math.floor(min / 60);
+  if (hours < 24) return `${hours.toLocaleString("fa-IR")} ساعت پیش`;
+  return `${Math.floor(hours / 24).toLocaleString("fa-IR")} روز پیش`;
 };
 
 // وضعیت من در یک مزایده: null / leading / outbid / won / lost

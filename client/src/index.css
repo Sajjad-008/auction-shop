@@ -73,3 +73,19 @@ body {
     cursor: pointer;
   }
 }
+
+/* هماهنگ کردن اجزای پیش‌فرض مرورگر (مثل نوار اسکرول) با تم */
+:root {
+  color-scheme: light;
+}
+.dark {
+  color-scheme: dark;
+}
+
+/* مخفی کردن نوار اسکرول (اسکرول همچنان کار می‌کند) */
+* {
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
