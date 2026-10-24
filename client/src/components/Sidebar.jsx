@@ -1,5 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import {
+  Bell,
   CircleDollarSign,
   Gavel,
   Heart,
@@ -87,6 +88,13 @@ export default function Sidebar({ counts, user, onLogout, open, onClose }) {
           icon={Heart}
           label="علاقه‌مندی‌ها"
           count={counts.favorites}
+          onClick={onClose}
+        />
+        <Item
+          to="/notifications"
+          icon={Bell}
+          label="اعلان‌ها"
+          count={counts.notifications}
           onClick={onClose}
         />
 
