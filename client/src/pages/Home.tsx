@@ -1,9 +1,10 @@
-import { useParams, useOutletContext } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import AuctionCard from "../components/AuctionCard";
+import useAppContext from "../hooks/useAppContext";
 
 export default function Home() {
-  const { auctions } = useOutletContext();
-  const { key } = useParams();
+  const { auctions } = useAppContext();
+  const { key } = useParams<{ key: string }>();
 
   const list = key ? auctions.filter((a) => a.category === key) : auctions;
 

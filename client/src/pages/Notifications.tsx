@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Bell, BellOff, CheckCheck } from "lucide-react";
 import NotificationItem from "../components/NotificationItem";
+import useAppContext from "../hooks/useAppContext";
+import type { AppNotification } from "../types";
 
 const tabs = [
   { key: "all", label: "همه" },
@@ -9,7 +11,7 @@ const tabs = [
 ];
 
 export default function Notifications() {
-  const { user, notifications: n } = useOutletContext();
+  const { user, notifications: n } = useAppContext();
   const navigate = useNavigate();
   const [tab, setTab] = useState("all");
 
@@ -30,7 +32,7 @@ export default function Notifications() {
 
   const list = tab === "unread" ? n.items.filter((x) => !x.read) : n.items;
 
-  const open = (item) => {
+  const open = (item: AppNotification) => {
     n.markRead(item.id);
     if (item.link) navigate(item.link);
   };

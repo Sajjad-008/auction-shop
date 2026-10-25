@@ -1,10 +1,19 @@
-import { Link, useOutletContext, useSearchParams } from "react-router-dom";
+import type { ReactNode } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { Search, SearchX } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import AuctionCard from "../components/AuctionCard";
+import useAppContext from "../hooks/useAppContext";
 import { categories } from "../data/categories";
 import { matches } from "../utils/search";
 
-function Empty({ icon: Icon, children }) {
+function Empty({
+  icon: Icon,
+  children,
+}: {
+  icon: LucideIcon;
+  children: ReactNode;
+}) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-2xl border border-line bg-surface py-16 text-center">
       <Icon size={40} className="text-muted" />
@@ -14,7 +23,7 @@ function Empty({ icon: Icon, children }) {
 }
 
 export default function SearchResults() {
-  const { auctions } = useOutletContext();
+  const { auctions } = useAppContext();
   const [params] = useSearchParams();
   const q = params.get("q") ?? "";
   const category = categories.find((c) => c.key === params.get("cat"));

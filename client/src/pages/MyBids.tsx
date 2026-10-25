@@ -1,15 +1,17 @@
 import { useState } from "react";
-import { Link, useOutletContext } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { CircleDollarSign } from "lucide-react";
 import AuctionImage from "../components/AuctionImage";
 import CountdownTimer from "../components/CountdownTimer";
 import StatusBadge from "../components/StatusBadge";
+import useAppContext from "../hooks/useAppContext";
 import {
   getCurrentPrice,
   getMyStatus,
   getMyBestBid,
   formatToman,
 } from "../utils/auction";
+import type { MyStatus } from "../types";
 
 const tabs = [
   { key: "all", label: "همه" },
@@ -18,14 +20,14 @@ const tabs = [
   { key: "won", label: "برنده شدم" },
 ];
 
-const match = (tab, status) =>
+const match = (tab: string, status: MyStatus) =>
   tab === "all" ||
   (tab === "outbid"
     ? status === "outbid" || status === "lost"
     : status === tab);
 
 export default function MyBids() {
-  const { auctions, user } = useOutletContext();
+  const { auctions, user } = useAppContext();
   const [tab, setTab] = useState("all");
 
   if (!user)
@@ -43,9 +45,10 @@ export default function MyBids() {
       </div>
     );
 
-  const mine = auctions
-    .map((a) => ({ a, status: getMyStatus(a) }))
-    .filter((x) => x.status);
+  const mine = auctions.flatMap((a) => {
+    const status = getMyStatus(a);
+    return status ? [{ a, status }] : [];
+  });
   const list = mine.filter((x) => match(tab, x.status));
 
   return (

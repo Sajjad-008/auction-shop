@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link, useOutletContext } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { LifeBuoy, Plus } from "lucide-react";
 import TicketStatusBadge from "../components/TicketStatusBadge";
+import useAppContext from "../hooks/useAppContext";
 import { ticketCategories } from "../data/ticketCategories";
 import { timeAgo } from "../utils/auction";
 import { faNum } from "../utils/ticket";
@@ -14,7 +15,7 @@ const tabs = [
 ];
 
 export default function Support() {
-  const { user, tickets } = useOutletContext();
+  const { user, tickets } = useAppContext();
   const [tab, setTab] = useState("all");
 
   if (!user)
@@ -34,7 +35,10 @@ export default function Support() {
 
   const mine = tickets.items
     .filter((t) => t.userEmail === user.email)
-    .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+    .sort(
+      (a, b) =>
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+    );
   const list = tab === "all" ? mine : mine.filter((t) => t.status === tab);
 
   return (

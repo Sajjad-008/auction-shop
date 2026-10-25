@@ -19,16 +19,33 @@ import { initialNotifications } from "./data/notifications";
 import { autoReplies } from "./data/ticketCategories";
 import { getMinNextBid, isEnded, formatToman, ME } from "./utils/auction";
 import { faNum } from "./utils/ticket";
+import type {
+  AppNotification,
+  Auction,
+  BidResult,
+  NewTicketInput,
+  NotificationsApi,
+  Ticket,
+  TicketCategoryKey,
+  TicketsApi,
+  TicketStatus,
+  User,
+} from "./types";
 
-const load = (key, fallback) => {
+type NewNotification = Pick<AppNotification, "type" | "title" | "text"> & {
+  link?: string | null;
+};
+
+const load = <T,>(key: string, fallback: T): T => {
   try {
-    return JSON.parse(localStorage.getItem(key)) ?? fallback;
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : fallback;
   } catch {
     return fallback;
   }
 };
 
-const save = (key, value) => {
+const save = (key: string, value: unknown): void => {
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch {
@@ -39,20 +56,26 @@ const save = (key, value) => {
 const msgId = () => `m${Date.now()}${Math.random().toString(36).slice(2, 6)}`;
 
 export default function App() {
-  const [auctions, setAuctions] = useState(initialAuctions);
-  const [user, setUser] = useState(() => load("user", null));
-  const [favorites, setFavorites] = useState(() => load("favorites", []));
-  const [items, setItems] = useState(() =>
-    load("notifications", initialNotifications),
+  const [auctions, setAuctions] = useState<Auction[]>(initialAuctions);
+  const [user, setUser] = useState<User | null>(() =>
+    load<User | null>("user", null),
   );
-  const [ticketItems, setTicketItems] = useState(() => load("tickets", []));
+  const [favorites, setFavorites] = useState<number[]>(() =>
+    load<number[]>("favorites", []),
+  );
+  const [items, setItems] = useState<AppNotification[]>(() =>
+    load<AppNotification[]>("notifications", initialNotifications),
+  );
+  const [ticketItems, setTicketItems] = useState<Ticket[]>(() =>
+    load<Ticket[]>("tickets", []),
+  );
   const [dark, toggleTheme] = useTheme();
 
   useEffect(() => save("favorites", favorites), [favorites]);
   useEffect(() => save("notifications", items), [items]);
   useEffect(() => save("tickets", ticketItems), [ticketItems]);
 
-  const addNotification = (n) =>
+  const addNotification = (n: NewNotification) =>
     setItems((prev) => [
       {
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
@@ -64,7 +87,7 @@ export default function App() {
       ...prev,
     ]);
 
-  const notifications = {
+  const notifications: NotificationsApi = {
     items,
     unread: items.filter((x) => !x.read).length,
     markRead: (id) =>
@@ -77,33 +100,37 @@ export default function App() {
   };
 
   // پاسخ پشتیبانی شبیه‌سازی‌شده؛ با بک‌اند، جواب واقعی از طرف ادمین می‌آید
-  const scheduleReply = (number, category) => {
+  const scheduleReply = (
+    number: number,
+    category: TicketCategoryKey | null,
+  ) => {
     setTimeout(() => {
       const now = new Date().toISOString();
-      const first = !!category;
-      const text = first
+      const first = category !== null;
+      const text = category
         ? autoReplies[category]
         : "پیامت رو دریافت کردیم و بررسی می‌کنیم.";
       setTicketItems((prev) =>
-        prev.map((t) =>
-          t.number === number && t.status !== "closed"
-            ? {
-                ...t,
-                status: first ? "answered" : t.status,
-                updatedAt: now,
-                messages: [
-                  ...t.messages,
-                  {
-                    id: msgId(),
-                    from: "support",
-                    auto: true,
-                    text,
-                    images: [],
-                    at: now,
-                  },
-                ],
-              }
-            : t,
+        prev.map(
+          (t): Ticket =>
+            t.number === number && t.status !== "closed"
+              ? {
+                  ...t,
+                  status: first ? "answered" : t.status,
+                  updatedAt: now,
+                  messages: [
+                    ...t.messages,
+                    {
+                      id: msgId(),
+                      from: "support",
+                      auto: true,
+                      text,
+                      images: [],
+                      at: now,
+                    },
+                  ],
+                }
+              : t,
         ),
       );
       addNotification({
@@ -115,50 +142,49 @@ export default function App() {
     }, 1500);
   };
 
-  const tickets = {
+  const tickets: TicketsApi = {
     items: ticketItems,
-    create: ({ category, title, message, images }) => {
+    create: ({ category, title, message, images }: NewTicketInput) => {
       const number =
         ticketItems.reduce((m, t) => Math.max(m, t.number), 1000) + 1;
       const now = new Date().toISOString();
-      setTicketItems((prev) => [
-        {
-          number,
-          userEmail: user.email,
-          category,
-          title,
-          status: "open",
-          createdAt: now,
-          updatedAt: now,
-          messages: [
-            { id: msgId(), from: "user", text: message, images, at: now },
-          ],
-        },
-        ...prev,
-      ]);
+      const ticket: Ticket = {
+        number,
+        userEmail: user?.email ?? "",
+        category,
+        title,
+        status: "open",
+        createdAt: now,
+        updatedAt: now,
+        messages: [
+          { id: msgId(), from: "user", text: message, images, at: now },
+        ],
+      };
+      setTicketItems((prev) => [ticket, ...prev]);
       scheduleReply(number, category);
       return number;
     },
     addMessage: (number, { text, images }) => {
       const now = new Date().toISOString();
       setTicketItems((prev) =>
-        prev.map((t) =>
-          t.number === number
-            ? {
-                ...t,
-                status: "open",
-                updatedAt: now,
-                messages: [
-                  ...t.messages,
-                  { id: msgId(), from: "user", text, images, at: now },
-                ],
-              }
-            : t,
+        prev.map(
+          (t): Ticket =>
+            t.number === number
+              ? {
+                  ...t,
+                  status: "open",
+                  updatedAt: now,
+                  messages: [
+                    ...t.messages,
+                    { id: msgId(), from: "user", text, images, at: now },
+                  ],
+                }
+              : t,
         ),
       );
       scheduleReply(number, null);
     },
-    setStatus: (number, status) =>
+    setStatus: (number: number, status: TicketStatus) =>
       setTicketItems((prev) =>
         prev.map((t) =>
           t.number === number
@@ -168,9 +194,9 @@ export default function App() {
       ),
   };
 
-  const login = (u) => {
+  const login = (u: User) => {
     setUser(u);
-    localStorage.setItem("user", JSON.stringify(u));
+    save("user", u);
     addNotification({
       type: "system",
       title: "ورود به حساب",
@@ -182,12 +208,12 @@ export default function App() {
     localStorage.removeItem("user");
   };
 
-  const toggleFavorite = (id) =>
+  const toggleFavorite = (id: number) =>
     setFavorites((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
 
-  const placeBid = (id, amount) => {
+  const placeBid = (id: number, amount: number): BidResult => {
     if (!user) return { ok: false, message: "برای ثبت پیشنهاد اول وارد شو." };
     const a = auctions.find((x) => x.id === id);
     if (!a) return { ok: false, message: "مزایده پیدا نشد." };
@@ -243,11 +269,11 @@ export default function App() {
             auctions={auctions}
             placeBid={placeBid}
             user={user}
-            onLogout={logout}
             favorites={favorites}
             toggleFavorite={toggleFavorite}
             notifications={notifications}
             tickets={tickets}
+            onLogout={logout}
             {...themeProps}
           />
         }

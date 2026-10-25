@@ -1,20 +1,34 @@
 import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
 import { ArrowUpDown, SearchX } from "lucide-react";
 import AuctionCard from "../components/AuctionCard";
 import Dropdown from "../components/Dropdown";
+import useAppContext from "../hooks/useAppContext";
 import { getCurrentPrice, isEnded } from "../utils/auction";
+import type { Auction } from "../types";
 
 const HOUR = 60 * 60 * 1000;
 const MILLION = 1_000_000;
 
-const filters = [
+interface FilterDef {
+  key: string;
+  label: string;
+  hint?: string;
+  test: (a: Auction) => boolean;
+}
+
+interface SortDef {
+  key: string;
+  label: string;
+  fn: (a: Auction, b: Auction) => number;
+}
+
+const filters: FilterDef[] = [
   { key: "all", label: "همه", test: () => true },
   {
     key: "soon",
     label: "به‌زودی تموم می‌شه",
     hint: "کمتر از ۲ ساعت مانده",
-    test: (a) => new Date(a.endAt) - Date.now() < 2 * HOUR,
+    test: (a) => new Date(a.endAt).getTime() - Date.now() < 2 * HOUR,
   },
   {
     key: "hot",
@@ -24,7 +38,7 @@ const filters = [
   },
 ];
 
-const priceRanges = [
+const priceRanges: FilterDef[] = [
   { key: "all", label: "همه قیمت‌ها", test: () => true },
   {
     key: "low",
@@ -44,11 +58,11 @@ const priceRanges = [
   },
 ];
 
-const sorts = [
+const sorts: SortDef[] = [
   {
     key: "end",
     label: "نزدیک‌ترین زمان پایان",
-    fn: (a, b) => new Date(a.endAt) - new Date(b.endAt),
+    fn: (a, b) => new Date(a.endAt).getTime() - new Date(b.endAt).getTime(),
   },
   {
     key: "priceAsc",
@@ -68,15 +82,15 @@ const sorts = [
 ];
 
 export default function ActiveAuctions() {
-  const { auctions } = useOutletContext();
+  const { auctions } = useAppContext();
   const [filter, setFilter] = useState("all");
   const [price, setPrice] = useState("all");
   const [sort, setSort] = useState("end");
 
   const active = auctions.filter((a) => !isEnded(a));
-  const filterTest = filters.find((f) => f.key === filter).test;
-  const priceTest = priceRanges.find((p) => p.key === price).test;
-  const sortFn = sorts.find((s) => s.key === sort).fn;
+  const filterTest = filters.find((f) => f.key === filter)!.test;
+  const priceTest = priceRanges.find((p) => p.key === price)!.test;
+  const sortFn = sorts.find((s) => s.key === sort)!.fn;
 
   const list = active.filter((a) => filterTest(a) && priceTest(a)).sort(sortFn);
   const hasFilters = filter !== "all" || price !== "all";

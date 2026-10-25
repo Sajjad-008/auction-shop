@@ -1,18 +1,20 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useOutletContext, useParams } from "react-router-dom";
+import type { FormEvent } from "react";
+import { Link, useParams } from "react-router-dom";
 import { ArrowRight, LifeBuoy, Lock, RotateCcw, Send } from "lucide-react";
 import ImagePicker from "../components/ImagePicker";
 import TicketStatusBadge from "../components/TicketStatusBadge";
+import useAppContext from "../hooks/useAppContext";
 import { ticketCategories } from "../data/ticketCategories";
 import { timeAgo } from "../utils/auction";
 import { faNum } from "../utils/ticket";
 
 export default function TicketChat() {
-  const { number } = useParams();
-  const { user, tickets } = useOutletContext();
+  const { number } = useParams<{ number: string }>();
+  const { user, tickets } = useAppContext();
   const [text, setText] = useState("");
-  const [images, setImages] = useState([]);
-  const listRef = useRef(null);
+  const [images, setImages] = useState<string[]>([]);
+  const listRef = useRef<HTMLDivElement>(null);
 
   const ticket = tickets.items.find(
     (t) => t.number === Number(number) && t.userEmail === user?.email,
@@ -53,7 +55,7 @@ export default function TicketChat() {
   const closed = ticket.status === "closed";
   const canSend = text.trim().length > 0 || images.length > 0;
 
-  const send = (e) => {
+  const send = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!canSend) return;
     tickets.addMessage(ticket.number, { text: text.trim(), images });
@@ -124,7 +126,7 @@ export default function TicketChat() {
                         {m.text}
                       </p>
                     )}
-                    {m.images?.length > 0 && (
+                    {m.images.length > 0 && (
                       <div className="flex flex-wrap gap-2">
                         {m.images.map((src, i) => (
                           <img

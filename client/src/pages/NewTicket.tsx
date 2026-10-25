@@ -1,19 +1,22 @@
 import { useState } from "react";
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import type { FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, LifeBuoy } from "lucide-react";
 import Dropdown from "../components/Dropdown";
 import FormField from "../components/FormField";
 import ImagePicker from "../components/ImagePicker";
+import useAppContext from "../hooks/useAppContext";
 import { ticketCategories } from "../data/ticketCategories";
+import type { TicketCategoryKey } from "../types";
 
 export default function NewTicket() {
-  const { user, tickets } = useOutletContext();
+  const { user, tickets } = useAppContext();
   const navigate = useNavigate();
-  const [category, setCategory] = useState("technical");
+  const [category, setCategory] = useState<TicketCategoryKey>("technical");
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
-  const [images, setImages] = useState([]);
-  const [touched, setTouched] = useState({});
+  const [images, setImages] = useState<string[]>([]);
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [submitted, setSubmitted] = useState(false);
 
   if (!user)
@@ -36,10 +39,12 @@ export default function NewTicket() {
     message:
       message.trim().length < 10 ? "متن پیام باید حداقل ۱۰ حرف باشد." : "",
   };
-  const show = (k) => (touched[k] || submitted) && errors[k];
-  const blur = (k) => () => setTouched((t) => ({ ...t, [k]: true }));
+  const show = (k: keyof typeof errors) =>
+    (touched[k] || submitted) && errors[k];
+  const blur = (k: keyof typeof errors) => () =>
+    setTouched((t) => ({ ...t, [k]: true }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitted(true);
     if (Object.values(errors).some(Boolean)) return;

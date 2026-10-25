@@ -1,4 +1,4 @@
-import { Link, useParams, useOutletContext } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import AuctionImage from "../components/AuctionImage";
 import CountdownTimer from "../components/CountdownTimer";
@@ -6,11 +6,12 @@ import FavoriteButton from "../components/FavoriteButton";
 import StatusBadge from "../components/StatusBadge";
 import BidForm from "../components/BidForm";
 import BidHistory from "../components/BidHistory";
+import useAppContext from "../hooks/useAppContext";
 import { getCurrentPrice, getMyStatus, formatToman } from "../utils/auction";
 
 export default function AuctionDetail() {
-  const { id } = useParams();
-  const { auctions, placeBid, user } = useOutletContext();
+  const { id } = useParams<{ id: string }>();
+  const { auctions, placeBid, user } = useAppContext();
   const auction = auctions.find((a) => a.id === Number(id));
 
   if (!auction)

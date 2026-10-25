@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { ChangeEvent, FocusEvent, FormEvent } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import AuthShell from "../components/AuthShell";
 import FormField from "../components/FormField";
@@ -8,10 +9,18 @@ import {
   validatePassword,
   validateConfirm,
 } from "../utils/validation";
+import type { User } from "../types";
 
-export default function Signup({ user, onAuth, dark, onToggleTheme }) {
+interface Props {
+  user: User | null;
+  onAuth: (user: User) => void;
+  dark: boolean;
+  onToggleTheme: () => void;
+}
+
+export default function Signup({ user, onAuth, dark, onToggleTheme }: Props) {
   const navigate = useNavigate();
-  const from = useLocation().state?.from ?? "/";
+  const from = (useLocation().state as { from?: string } | null)?.from ?? "/";
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -19,7 +28,7 @@ export default function Signup({ user, onAuth, dark, onToggleTheme }) {
     confirm: "",
     terms: false,
   });
-  const [touched, setTouched] = useState({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [submitted, setSubmitted] = useState(false);
 
   if (user) return <Navigate to={from} replace />;
@@ -31,16 +40,17 @@ export default function Signup({ user, onAuth, dark, onToggleTheme }) {
     confirm: validateConfirm(values.password, values.confirm),
     terms: values.terms ? "" : "پذیرش قوانین الزامی است.",
   };
-  const show = (k) => (touched[k] || submitted) && errors[k];
+  const show = (k: keyof typeof errors) =>
+    (touched[k] || submitted) && errors[k];
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setValues((v) => ({ ...v, [name]: type === "checkbox" ? checked : value }));
   };
-  const handleBlur = (e) =>
+  const handleBlur = (e: FocusEvent<HTMLInputElement>) =>
     setTouched((t) => ({ ...t, [e.target.name]: true }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitted(true);
     if (Object.values(errors).some(Boolean)) return;

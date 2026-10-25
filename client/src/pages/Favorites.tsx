@@ -1,8 +1,10 @@
-import { Link, useOutletContext } from "react-router-dom";
+import type { ReactNode } from "react";
+import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
 import AuctionCard from "../components/AuctionCard";
+import useAppContext from "../hooks/useAppContext";
 
-function Empty({ text, action }) {
+function Empty({ text, action }: { text: string; action: ReactNode }) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-2xl border border-line bg-surface py-16 text-center">
       <Heart size={40} className="text-muted" />
@@ -13,7 +15,7 @@ function Empty({ text, action }) {
 }
 
 export default function Favorites() {
-  const { auctions, user, favorites } = useOutletContext();
+  const { auctions, user, favorites } = useAppContext();
 
   if (!user)
     return (
@@ -22,6 +24,7 @@ export default function Favorites() {
         action={
           <Link
             to="/login"
+            state={{ from: "/favorites" }}
             className="rounded-xl bg-btn px-6 py-2.5 font-bold text-white transition-colors hover:bg-btn-hover active:bg-btn-active"
           >
             ورود
