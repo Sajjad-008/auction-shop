@@ -5,6 +5,7 @@ import {
   Gavel,
   Heart,
   House,
+  LifeBuoy,
   List,
   LogOut,
   X,
@@ -95,6 +96,12 @@ export default function Sidebar({ counts, user, onLogout, open, onClose }) {
           icon={Bell}
           label="اعلان‌ها"
           count={counts.notifications}
+          onClick={onClose}
+        />
+        <Item
+          to="/support"
+          icon={LifeBuoy}
+          label="پشتیبانی"
           onClick={onClose}
         />
 

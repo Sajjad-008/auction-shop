@@ -8,12 +8,17 @@ import MyBids from "./pages/MyBids";
 import Favorites from "./pages/Favorites";
 import Notifications from "./pages/Notifications";
 import SearchResults from "./pages/SearchResults";
+import Support from "./pages/Support";
+import NewTicket from "./pages/NewTicket";
+import TicketChat from "./pages/TicketChat";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import useTheme from "./hooks/useTheme";
 import { initialAuctions } from "./data/auctions";
 import { initialNotifications } from "./data/notifications";
+import { autoReplies } from "./data/ticketCategories";
 import { getMinNextBid, isEnded, formatToman, ME } from "./utils/auction";
+import { faNum } from "./utils/ticket";
 
 const load = (key, fallback) => {
   try {
@@ -23,6 +28,16 @@ const load = (key, fallback) => {
   }
 };
 
+const save = (key, value) => {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    console.warn(`ذخیره‌ی «${key}» ممکن نشد (حافظه‌ی مرورگر پر است).`);
+  }
+};
+
+const msgId = () => `m${Date.now()}${Math.random().toString(36).slice(2, 6)}`;
+
 export default function App() {
   const [auctions, setAuctions] = useState(initialAuctions);
   const [user, setUser] = useState(() => load("user", null));
@@ -30,15 +45,12 @@ export default function App() {
   const [items, setItems] = useState(() =>
     load("notifications", initialNotifications),
   );
+  const [ticketItems, setTicketItems] = useState(() => load("tickets", []));
   const [dark, toggleTheme] = useTheme();
 
-  useEffect(() => {
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-  }, [favorites]);
-
-  useEffect(() => {
-    localStorage.setItem("notifications", JSON.stringify(items));
-  }, [items]);
+  useEffect(() => save("favorites", favorites), [favorites]);
+  useEffect(() => save("notifications", items), [items]);
+  useEffect(() => save("tickets", ticketItems), [ticketItems]);
 
   const addNotification = (n) =>
     setItems((prev) => [
@@ -62,6 +74,98 @@ export default function App() {
     markAllRead: () =>
       setItems((prev) => prev.map((x) => ({ ...x, read: true }))),
     remove: (id) => setItems((prev) => prev.filter((x) => x.id !== id)),
+  };
+
+  // پاسخ پشتیبانی شبیه‌سازی‌شده؛ با بک‌اند، جواب واقعی از طرف ادمین می‌آید
+  const scheduleReply = (number, category) => {
+    setTimeout(() => {
+      const now = new Date().toISOString();
+      const first = !!category;
+      const text = first
+        ? autoReplies[category]
+        : "پیامت رو دریافت کردیم و بررسی می‌کنیم.";
+      setTicketItems((prev) =>
+        prev.map((t) =>
+          t.number === number && t.status !== "closed"
+            ? {
+                ...t,
+                status: first ? "answered" : t.status,
+                updatedAt: now,
+                messages: [
+                  ...t.messages,
+                  {
+                    id: msgId(),
+                    from: "support",
+                    auto: true,
+                    text,
+                    images: [],
+                    at: now,
+                  },
+                ],
+              }
+            : t,
+        ),
+      );
+      addNotification({
+        type: "support",
+        title: "پاسخ پشتیبانی",
+        text: `برای تیکت #${faNum(number)} پیام جدید داری.`,
+        link: `/support/${number}`,
+      });
+    }, 1500);
+  };
+
+  const tickets = {
+    items: ticketItems,
+    create: ({ category, title, message, images }) => {
+      const number =
+        ticketItems.reduce((m, t) => Math.max(m, t.number), 1000) + 1;
+      const now = new Date().toISOString();
+      setTicketItems((prev) => [
+        {
+          number,
+          userEmail: user.email,
+          category,
+          title,
+          status: "open",
+          createdAt: now,
+          updatedAt: now,
+          messages: [
+            { id: msgId(), from: "user", text: message, images, at: now },
+          ],
+        },
+        ...prev,
+      ]);
+      scheduleReply(number, category);
+      return number;
+    },
+    addMessage: (number, { text, images }) => {
+      const now = new Date().toISOString();
+      setTicketItems((prev) =>
+        prev.map((t) =>
+          t.number === number
+            ? {
+                ...t,
+                status: "open",
+                updatedAt: now,
+                messages: [
+                  ...t.messages,
+                  { id: msgId(), from: "user", text, images, at: now },
+                ],
+              }
+            : t,
+        ),
+      );
+      scheduleReply(number, null);
+    },
+    setStatus: (number, status) =>
+      setTicketItems((prev) =>
+        prev.map((t) =>
+          t.number === number
+            ? { ...t, status, updatedAt: new Date().toISOString() }
+            : t,
+        ),
+      ),
   };
 
   const login = (u) => {
@@ -143,6 +247,7 @@ export default function App() {
             favorites={favorites}
             toggleFavorite={toggleFavorite}
             notifications={notifications}
+            tickets={tickets}
             {...themeProps}
           />
         }
@@ -154,6 +259,9 @@ export default function App() {
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/search" element={<SearchResults />} />
+        <Route path="/support" element={<Support />} />
+        <Route path="/support/new" element={<NewTicket />} />
+        <Route path="/support/:number" element={<TicketChat />} />
         <Route path="/auction/:id" element={<AuctionDetail />} />
       </Route>
     </Routes>

@@ -13,6 +13,7 @@ export default function Layout({
   favorites,
   toggleFavorite,
   notifications,
+  tickets,
   dark,
   onToggleTheme,
 }) {
@@ -37,6 +38,9 @@ export default function Layout({
   else if (pathname === "/favorites") title = "علاقه‌مندی‌ها";
   else if (pathname === "/notifications") title = "اعلان‌ها";
   else if (pathname === "/search") title = "نتایج جستجو";
+  else if (pathname === "/support") title = "پشتیبانی";
+  else if (pathname === "/support/new") title = "تیکت جدید";
+  else if (pathname.startsWith("/support/")) title = "گفتگوی تیکت";
   else if (pathname.startsWith("/category/"))
     title =
       categories.find((c) => c.key === pathname.split("/")[2])?.label ??
@@ -71,6 +75,7 @@ export default function Layout({
               favorites,
               toggleFavorite,
               notifications,
+              tickets,
             }}
           />
         </main>
