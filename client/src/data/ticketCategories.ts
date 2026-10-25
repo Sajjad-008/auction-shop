@@ -1,0 +1,19 @@
+import type { Option, TicketCategoryKey } from "../types";
+
+export const ticketCategories: Option<TicketCategoryKey>[] = [
+  { key: "technical", label: "مشکل فنی" },
+  { key: "auction", label: "مزایده و پیشنهاد" },
+  { key: "account", label: "حساب کاربری" },
+  { key: "other", label: "سایر" },
+];
+
+// پاسخ‌های خودکار نمونه (فقط برای شبیه‌سازی تا زمان اتصال به سرور)
+export const autoReplies: Record<TicketCategoryKey, string> = {
+  technical:
+    "تیکتت ثبت شد. اگه مشکل توی یه صفحه‌ی مشخص بود، آدرس اون صفحه و مرورگری که استفاده می‌کنی رو هم بنویس.",
+  auction:
+    "تیکتت ثبت شد. اگه درباره‌ی یه مزایده‌ی مشخصه، عنوان مزایده و مبلغ پیشنهادت رو هم بنویس.",
+  account:
+    "تیکتت ثبت شد. برای بررسی مشکل حساب، ایمیلی که با اون ثبت‌نام کردی رو بنویس. رمز عبورت رو هیچ‌وقت برای ما نفرست.",
+  other: "تیکتت ثبت شد. اگه توضیح بیشتری داری بنویس تا سریع‌تر بررسی بشه.",
+};
