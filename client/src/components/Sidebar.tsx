@@ -94,7 +94,12 @@ export default function Sidebar({
         </div>
 
         <p className="px-3 pt-2 text-xs font-bold text-muted">منو</p>
-        <Item to="/" end icon={House} label="خانه" onClick={onClose} />
+        <Item
+          to="/auctions"
+          icon={House}
+          label="همه مزایده‌ها"
+          onClick={onClose}
+        />
         <Item
           to="/active"
           icon={List}

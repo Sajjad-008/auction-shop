@@ -18,7 +18,7 @@ export default function AuctionDetail() {
     return (
       <div className="space-y-3">
         <p>این مزایده پیدا نشد.</p>
-        <Link to="/" className="text-primary hover:underline">
+        <Link to="/auctions" className="text-primary hover:underline">
           بازگشت به لیست
         </Link>
       </div>
@@ -29,7 +29,7 @@ export default function AuctionDetail() {
   return (
     <div className="space-y-4">
       <Link
-        to="/"
+        to="/auctions"
         className="inline-flex items-center gap-1 text-sm text-muted hover:text-fg"
       >
         <ArrowRight size={16} /> بازگشت به لیست
