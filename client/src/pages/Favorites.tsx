@@ -40,7 +40,10 @@ export default function Favorites() {
       <Empty
         text="هنوز مزایده‌ای رو علاقه‌مندی نکردی. روی قلب کارت‌ها بزن."
         action={
-          <Link to="/" className="font-bold text-primary hover:underline">
+          <Link
+            to="/auctions"
+            className="font-bold text-primary hover:underline"
+          >
             دیدن مزایده‌ها
           </Link>
         }

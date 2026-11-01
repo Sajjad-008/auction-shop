@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import ActiveAuctions from "./pages/ActiveAuctions";
@@ -13,6 +13,7 @@ import NewTicket from "./pages/NewTicket";
 import TicketChat from "./pages/TicketChat";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Landing from "./pages/Landing";
 import useTheme from "./hooks/useTheme";
 import { initialAuctions } from "./data/auctions";
 import { initialNotifications } from "./data/notifications";
@@ -255,6 +256,16 @@ export default function App() {
   return (
     <Routes>
       <Route
+        path="/"
+        element={
+          user ? (
+            <Navigate to="/auctions" replace />
+          ) : (
+            <Landing auctions={auctions} {...themeProps} />
+          )
+        }
+      />
+      <Route
         path="/login"
         element={<Login user={user} onAuth={login} {...themeProps} />}
       />
@@ -278,7 +289,7 @@ export default function App() {
           />
         }
       >
-        <Route path="/" element={<Home />} />
+        <Route path="/auctions" element={<Home />} />
         <Route path="/active" element={<ActiveAuctions />} />
         <Route path="/category/:key" element={<Home />} />
         <Route path="/my-bids" element={<MyBids />} />
