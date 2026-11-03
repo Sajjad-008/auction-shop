@@ -1,5 +1,5 @@
-import { formatToman, timeAgo } from "../utils/auction";
-import type { Bid } from "../types";
+import { formatToman, timeAgo } from "../../utils/auction";
+import type { Bid } from "../../types";
 
 export default function BidHistory({ bids }: { bids: Bid[] }) {
   return (

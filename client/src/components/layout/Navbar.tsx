@@ -1,7 +1,7 @@
 import { Menu, Moon, Sun } from "lucide-react";
-import SearchBox from "./SearchBox";
-import NotificationBell from "./NotificationBell";
-import type { NotificationsApi, User } from "../types";
+import SearchBox from "../search/SearchBox";
+import NotificationBell from "../notifications/NotificationBell";
+import type { NotificationsApi, User } from "../../types";
 
 interface Props {
   title: string;

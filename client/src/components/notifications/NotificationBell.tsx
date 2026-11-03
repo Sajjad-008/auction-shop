@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Bell, BellOff, CheckCheck } from "lucide-react";
 import NotificationItem from "./NotificationItem";
-import type { AppNotification, NotificationsApi } from "../types";
+import type { AppNotification, NotificationsApi } from "../../types";
 
 export default function NotificationBell({ n }: { n: NotificationsApi }) {
   const [open, setOpen] = useState(false);

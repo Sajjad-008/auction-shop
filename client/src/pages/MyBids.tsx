@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { CircleDollarSign } from "lucide-react";
-import AuctionImage from "../components/AuctionImage";
-import CountdownTimer from "../components/CountdownTimer";
-import StatusBadge from "../components/StatusBadge";
+import AuctionImage from "../components/auction/AuctionImage";
+import CountdownTimer from "../components/auction/CountdownTimer";
+import StatusBadge from "../components/auction/StatusBadge";
 import useAppContext from "../hooks/useAppContext";
 import {
   getCurrentPrice,

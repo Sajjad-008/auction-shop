@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import AuctionCard from "../components/AuctionCard";
+import AuctionCard from "../components/auction/AuctionCard";
 import useAppContext from "../hooks/useAppContext";
 
 export default function Home() {

@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { ShieldAlert } from "lucide-react";
-import useAppContext from "../hooks/useAppContext";
-import type { Role } from "../types";
+import useAppContext from "../../hooks/useAppContext";
+import type { Role } from "../../types";
 
 interface Props {
   role: Role;

@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Trash2 } from "lucide-react";
-import AuctionImage from "./AuctionImage";
-import CountdownTimer from "./CountdownTimer";
-import { categories } from "../data/categories";
-import { formatToman, getCurrentPrice } from "../utils/auction";
-import type { Auction } from "../types";
+import AuctionImage from "../auction/AuctionImage";
+import CountdownTimer from "../auction/CountdownTimer";
+import { categories } from "../../data/categories";
+import { formatToman, getCurrentPrice } from "../../utils/auction";
+import type { Auction } from "../../types";
 
 interface Props {
   auction: Auction;

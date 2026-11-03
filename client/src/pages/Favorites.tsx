@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
-import AuctionCard from "../components/AuctionCard";
+import AuctionCard from "../components/auction/AuctionCard";
 import useAppContext from "../hooks/useAppContext";
 
 function Empty({ text, action }: { text: string; action: ReactNode }) {

@@ -6,8 +6,8 @@ import {
   Plus,
   Timer,
 } from "lucide-react";
-import AnimatedNumber from "../../components/AnimatedNumber";
-import SellerAuctionRow from "../../components/SellerAuctionRow";
+import AnimatedNumber from "../../components/ui/AnimatedNumber";
+import SellerAuctionRow from "../../components/seller/SellerAuctionRow";
 import useAppContext from "../../hooks/useAppContext";
 import { isEnded } from "../../utils/auction";
 

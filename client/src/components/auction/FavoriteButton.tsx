@@ -1,6 +1,6 @@
 import { Heart } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-import useAppContext from "../hooks/useAppContext";
+import useAppContext from "../../hooks/useAppContext";
 
 interface Props {
   auctionId: number;

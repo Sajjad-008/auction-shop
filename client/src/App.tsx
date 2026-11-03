@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import Layout from "./components/Layout";
-import RoleGuard from "./components/RoleGuard";
+import Layout from "./components/layout/Layout";
+import RoleGuard from "./components/auth/RoleGuard";
 import Home from "./pages/Home";
 import ActiveAuctions from "./pages/ActiveAuctions";
 import AuctionDetail from "./pages/AuctionDetail";
