@@ -1,6 +1,5 @@
 import type { Auction } from "../types";
 
-// حروف عربی و اعراب رو یکی می‌کنه تا جستجو دقیق‌تر بشه
 export const normalize = (s: string): string =>
   s
     .replace(/ي/g, "ی")

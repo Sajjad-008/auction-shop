@@ -14,7 +14,6 @@ export const isEnded = (a: Auction): boolean =>
 export const formatToman = (n: number): string =>
   `${n.toLocaleString("fa-IR")} تومان`;
 
-// ورودی کاربر رو (حتی با ارقام فارسی و جداکننده) به رشته‌ی ارقام انگلیسی تبدیل می‌کنه
 export const toEnglishDigits = (s: string): string =>
   s
     .replace(/[۰-۹]/g, (d) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(d)))
@@ -30,7 +29,6 @@ export const timeAgo = (iso: string): string => {
   return `${Math.floor(hours / 24).toLocaleString("fa-IR")} روز پیش`;
 };
 
-// وضعیت من در یک مزایده: null / leading / outbid / won / lost
 export const getMyStatus = (a: Auction): MyStatus | null => {
   if (!a.bids.some((b) => b.user === ME)) return null;
   const top = a.bids[0].user === ME;
