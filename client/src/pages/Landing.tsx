@@ -6,6 +6,7 @@ import {
   Gavel,
   Handshake,
   History,
+  LayoutDashboard,
   LifeBuoy,
   Moon,
   ShieldCheck,
@@ -24,10 +25,12 @@ import GithubIcon from "../components/GithubIcon";
 import { categories } from "../data/categories";
 import { partners } from "../data/partners";
 import { formatToman, getCurrentPrice, isEnded } from "../utils/auction";
-import type { Auction } from "../types";
+import { panelPath } from "../utils/paths";
+import type { Auction, User } from "../types";
 
 interface Props {
   auctions: Auction[];
+  user: User | null;
   dark: boolean;
   onToggleTheme: () => void;
 }
@@ -94,7 +97,12 @@ function SectionHead({ title, text }: { title: string; text?: string }) {
   );
 }
 
-export default function Landing({ auctions, dark, onToggleTheme }: Props) {
+export default function Landing({
+  auctions,
+  user,
+  dark,
+  onToggleTheme,
+}: Props) {
   const active = auctions.filter((a) => !isEnded(a));
   const featured = [...active].sort(
     (a, b) => new Date(a.endAt).getTime() - new Date(b.endAt).getTime(),
@@ -114,6 +122,9 @@ export default function Landing({ auctions, dark, onToggleTheme }: Props) {
     "rounded-xl bg-btn px-6 py-3 font-bold text-white transition-colors hover:bg-btn-hover active:bg-btn-active";
   const outlineBtn =
     "rounded-xl border border-line bg-surface px-6 py-3 font-medium transition-colors hover:bg-hover active:bg-primary-soft";
+
+  const dashboard = user ? panelPath(user.role) : "/login";
+  const showSellerCta = !user || user.role === "seller";
 
   return (
     <div className="min-h-screen">
@@ -167,18 +178,31 @@ export default function Landing({ auctions, dark, onToggleTheme }: Props) {
             >
               {dark ? <Sun size={20} /> : <Moon size={20} />}
             </button>
-            <Link
-              to="/login"
-              className="rounded-xl border border-line px-3 py-2 text-sm font-medium transition-colors hover:bg-hover active:bg-primary-soft sm:px-4"
-            >
-              ورود
-            </Link>
-            <Link
-              to="/signup"
-              className="rounded-xl bg-btn px-3 py-2 text-sm font-bold text-white transition-colors hover:bg-btn-hover active:bg-btn-active sm:px-4"
-            >
-              ثبت‌نام
-            </Link>
+
+            {user ? (
+              <Link
+                to={dashboard}
+                className="flex items-center gap-2 rounded-xl bg-btn px-3 py-2 text-sm font-bold text-white transition-colors hover:bg-btn-hover active:bg-btn-active sm:px-4"
+              >
+                <LayoutDashboard size={18} />
+                داشبورد
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="rounded-xl border border-line px-3 py-2 text-sm font-medium transition-colors hover:bg-hover active:bg-primary-soft sm:px-4"
+                >
+                  ورود
+                </Link>
+                <Link
+                  to="/signup"
+                  className="rounded-xl bg-btn px-3 py-2 text-sm font-bold text-white transition-colors hover:bg-btn-hover active:bg-btn-active sm:px-4"
+                >
+                  ثبت‌نام
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -208,9 +232,11 @@ export default function Landing({ auctions, dark, onToggleTheme }: Props) {
                 چطور کار می‌کنه؟
               </a>
             </div>
-            <p className="text-sm text-muted">
-              دیدن مزایده‌ها نیازی به ثبت‌نام نداره.
-            </p>
+            {!user && (
+              <p className="text-sm text-muted">
+                دیدن مزایده‌ها نیازی به ثبت‌نام نداره.
+              </p>
+            )}
           </div>
 
           {featured && (
@@ -370,13 +396,21 @@ export default function Landing({ auctions, dark, onToggleTheme }: Props) {
                 ))}
               </ul>
             </div>
-            <Link
-              to="/signup"
-              state={{ role: "seller" }}
-              className={`text-center ${primaryBtn}`}
-            >
-              ثبت‌نام به‌عنوان فروشنده
-            </Link>
+
+            {showSellerCta &&
+              (user ? (
+                <Link to="/seller/new" className={`text-center ${primaryBtn}`}>
+                  ساخت مزایده‌ی جدید
+                </Link>
+              ) : (
+                <Link
+                  to="/signup"
+                  state={{ role: "seller" }}
+                  className={`text-center ${primaryBtn}`}
+                >
+                  ثبت‌نام به‌عنوان فروشنده
+                </Link>
+              ))}
           </div>
         </section>
 
@@ -391,13 +425,23 @@ export default function Landing({ auctions, dark, onToggleTheme }: Props) {
         <section className="mx-auto max-w-6xl px-4 py-12">
           <div className="space-y-5 rounded-3xl border border-line bg-surface px-6 py-12 text-center">
             <h2 className="text-2xl font-bold sm:text-3xl">
-              آماده‌ای شروع کنی؟
+              {user ? "برگرد به پنلت" : "آماده‌ای شروع کنی؟"}
             </h2>
-            <p className="text-muted">ثبت‌نام چند ثانیه بیشتر طول نمی‌کشه.</p>
+            <p className="text-muted">
+              {user
+                ? "مزایده‌هات اون‌جا منتظرتن."
+                : "ثبت‌نام چند ثانیه بیشتر طول نمی‌کشه."}
+            </p>
             <div className="flex flex-wrap justify-center gap-3">
-              <Link to="/signup" className={primaryBtn}>
-                ساخت حساب
-              </Link>
+              {user ? (
+                <Link to={dashboard} className={primaryBtn}>
+                  رفتن به داشبورد
+                </Link>
+              ) : (
+                <Link to="/signup" className={primaryBtn}>
+                  ساخت حساب
+                </Link>
+              )}
               <Link to="/auctions" className={outlineBtn}>
                 دیدن مزایده‌ها
               </Link>
