@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import RoleGuard from "./components/RoleGuard";
 import Home from "./pages/Home";
@@ -63,7 +63,6 @@ const save = (key: string, value: unknown): void => {
 const msgId = () => `m${Date.now()}${Math.random().toString(36).slice(2, 6)}`;
 const emailKey = (email: string) => email.trim().toLowerCase();
 
-// کاربرهای ذخیره‌شده‌ی قدیمی نقش نداشتند
 const loadUser = (): User | null => {
   const u = load<User | null>("user", null);
   return u ? { ...u, role: u.role ?? "buyer" } : null;
@@ -126,7 +125,6 @@ export default function App() {
     remove: (id) => setItems((prev) => prev.filter((x) => x.id !== id)),
   };
 
-  // پاسخ پشتیبانی شبیه‌سازی‌شده؛ با بک‌اند، جواب واقعی از طرف ادمین می‌آید
   const scheduleReply = (
     number: number,
     category: TicketCategoryKey | null,
@@ -333,19 +331,12 @@ export default function App() {
   };
 
   const themeProps = { dark, onToggleTheme: toggleTheme };
-  const homePath = user?.role === "seller" ? "/seller" : "/auctions";
 
   return (
     <Routes>
       <Route
         path="/"
-        element={
-          user ? (
-            <Navigate to={homePath} replace />
-          ) : (
-            <Landing auctions={auctions} {...themeProps} />
-          )
-        }
+        element={<Landing auctions={auctions} user={user} {...themeProps} />}
       />
       <Route
         path="/login"

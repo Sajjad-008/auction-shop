@@ -1,8 +1,9 @@
 import { useState } from "react";
 import type { ChangeEvent, FocusEvent, FormEvent } from "react";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import AuthShell from "../components/AuthShell";
 import FormField from "../components/FormField";
+import { panelPath } from "../utils/paths";
 import { validateEmail, validateRequired } from "../utils/validation";
 import type { User } from "../types";
 
@@ -14,13 +15,12 @@ interface Props {
 }
 
 export default function Login({ user, onAuth, dark, onToggleTheme }: Props) {
-  const navigate = useNavigate();
-  const from = (useLocation().state as { from?: string } | null)?.from ?? "/";
+  const from = (useLocation().state as { from?: string } | null)?.from;
   const [values, setValues] = useState({ email: "", password: "" });
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [submitted, setSubmitted] = useState(false);
 
-  if (user) return <Navigate to={from} replace />;
+  if (user) return <Navigate to={from ?? panelPath(user.role)} replace />;
 
   const errors = {
     email: validateEmail(values.email),
@@ -40,7 +40,6 @@ export default function Login({ user, onAuth, dark, onToggleTheme }: Props) {
     if (Object.values(errors).some(Boolean)) return;
     const email = values.email.trim();
     onAuth({ name: email.split("@")[0], email, role: "buyer" });
-    navigate(from, { replace: true });
   };
 
   return (

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ChangeEvent, FocusEvent, FormEvent } from "react";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { ShoppingBag, Store } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import AuthShell from "../components/AuthShell";
@@ -12,6 +12,7 @@ import {
   validateConfirm,
 } from "../utils/validation";
 import type { Role, User } from "../types";
+import { panelPath } from "../utils/paths";
 
 interface Props {
   user: User | null;
@@ -46,9 +47,8 @@ export default function Signup({
   dark,
   onToggleTheme,
 }: Props) {
-  const navigate = useNavigate();
   const state = useLocation().state as { from?: string; role?: Role } | null;
-  const from = state?.from ?? "/";
+  const from = state?.from;
   const [role, setRole] = useState<Role>(state?.role ?? "buyer");
   const [values, setValues] = useState({
     name: "",
@@ -60,7 +60,7 @@ export default function Signup({
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [submitted, setSubmitted] = useState(false);
 
-  if (user) return <Navigate to={from} replace />;
+  if (user) return <Navigate to={from ?? panelPath(user.role)} replace />;
 
   const errors = {
     name: validateName(values.name),
@@ -84,7 +84,6 @@ export default function Signup({
     setSubmitted(true);
     if (Object.values(errors).some(Boolean)) return;
     onRegister({ name: values.name.trim(), email: values.email.trim(), role });
-    navigate(from, { replace: true });
   };
 
   return (
