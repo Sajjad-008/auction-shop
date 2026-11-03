@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { faq } from "../data/faq";
+import { faq } from "../../data/faq";
 
 export default function Faq() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);

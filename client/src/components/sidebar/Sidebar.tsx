@@ -14,8 +14,8 @@ import {
   X,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { categories } from "../data/categories";
-import type { User } from "../types";
+import { categories } from "../../data/categories";
+import type { User } from "../../types";
 
 interface ItemProps {
   to: string;

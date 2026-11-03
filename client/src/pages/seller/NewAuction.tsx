@@ -1,11 +1,11 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import AuctionImage from "../../components/AuctionImage";
-import Dropdown from "../../components/Dropdown";
-import FormField from "../../components/FormField";
-import ImagePicker from "../../components/ImagePicker";
-import MoneyField from "../../components/MoneyField";
+import AuctionImage from "../../components/auction/AuctionImage";
+import Dropdown from "../../components/ui/Dropdown";
+import FormField from "../../components/ui/FormField";
+import ImagePicker from "../../components/ui/ImagePicker";
+import MoneyField from "../../components/ui/MoneyField";
 import useAppContext from "../../hooks/useAppContext";
 import { categories } from "../../data/categories";
 import { formatToman } from "../../utils/auction";

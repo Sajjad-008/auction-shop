@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ArrowUpDown, SearchX } from "lucide-react";
-import AuctionCard from "../components/AuctionCard";
-import Dropdown from "../components/Dropdown";
+import AuctionCard from "../components/auction/AuctionCard";
+import Dropdown from "../components/ui/Dropdown";
 import useAppContext from "../hooks/useAppContext";
 import { getCurrentPrice, isEnded } from "../utils/auction";
 import type { Auction } from "../types";

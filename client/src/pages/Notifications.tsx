@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Bell, BellOff, CheckCheck } from "lucide-react";
-import NotificationItem from "../components/NotificationItem";
+import NotificationItem from "../components/notifications/NotificationItem";
 import useAppContext from "../hooks/useAppContext";
 import type { AppNotification } from "../types";
 

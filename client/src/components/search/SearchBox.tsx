@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Search } from "lucide-react";
-import Dropdown from "./Dropdown";
-import { categories } from "../data/categories";
-import type { Option } from "../types";
+import Dropdown from "../ui/Dropdown";
+import { categories } from "../../data/categories";
+import type { Option } from "../../types";
 
 const options: Option[] = [
   { key: "all", label: "همه دسته‌ها" },

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Package, Plus } from "lucide-react";
-import SellerAuctionRow from "../../components/SellerAuctionRow";
+import SellerAuctionRow from "../../components/seller/SellerAuctionRow";
 import useAppContext from "../../hooks/useAppContext";
 import { isEnded } from "../../utils/auction";
 import type { BidResult } from "../../types";

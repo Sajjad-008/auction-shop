@@ -1,5 +1,5 @@
 import type { ChangeEvent } from "react";
-import { toEnglishDigits } from "../utils/auction";
+import { toEnglishDigits } from "../../utils/auction";
 
 interface Props {
   label: string;

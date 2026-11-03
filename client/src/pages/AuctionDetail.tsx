@@ -1,11 +1,11 @@
 import { Link, useParams } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import AuctionImage from "../components/AuctionImage";
-import CountdownTimer from "../components/CountdownTimer";
-import FavoriteButton from "../components/FavoriteButton";
-import StatusBadge from "../components/StatusBadge";
-import BidForm from "../components/BidForm";
-import BidHistory from "../components/BidHistory";
+import AuctionImage from "../components/auction/AuctionImage";
+import CountdownTimer from "../components/auction/CountdownTimer";
+import FavoriteButton from "../components/auction/FavoriteButton";
+import StatusBadge from "../components/auction/StatusBadge";
+import BidForm from "../components/auction/BidForm";
+import BidHistory from "../components/auction/BidHistory";
 import useAppContext from "../hooks/useAppContext";
 import { getCurrentPrice, getMyStatus, formatToman } from "../utils/auction";
 

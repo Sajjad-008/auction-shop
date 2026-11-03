@@ -1,4 +1,4 @@
-import type { MyStatus } from "../types";
+import type { MyStatus } from "../../types";
 
 const styles: Record<MyStatus, string> = {
   leading: "bg-success-soft text-success",

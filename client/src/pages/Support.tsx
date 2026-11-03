@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { LifeBuoy, Plus } from "lucide-react";
-import TicketStatusBadge from "../components/TicketStatusBadge";
+import TicketStatusBadge from "../components/support/TicketStatusBadge";
 import useAppContext from "../hooks/useAppContext";
 import { ticketCategories } from "../data/ticketCategories";
 import { timeAgo } from "../utils/auction";

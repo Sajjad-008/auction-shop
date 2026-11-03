@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import AuctionImage from "./AuctionImage";
 import CountdownTimer from "./CountdownTimer";
 import FavoriteButton from "./FavoriteButton";
-import { getCurrentPrice, isEnded, formatToman } from "../utils/auction";
-import type { Auction } from "../types";
+import { getCurrentPrice, isEnded, formatToman } from "../../utils/auction";
+import type { Auction } from "../../types";
 
 export default function AuctionCard({ auction }: { auction: Auction }) {
   const ended = isEnded(auction);

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import Sidebar from "./Sidebar";
+import Sidebar from "../sidebar/Sidebar";
 import Navbar from "./Navbar";
-import { categories } from "../data/categories";
-import { getMyStatus, isEnded } from "../utils/auction";
-import type { AppContext } from "../types";
+import { categories } from "../../data/categories";
+import { getMyStatus, isEnded } from "../../utils/auction";
+import type { AppContext } from "../../types";
 
 interface Props extends AppContext {
   onLogout: () => void;

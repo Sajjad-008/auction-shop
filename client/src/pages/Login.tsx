@@ -1,8 +1,8 @@
 import { useState } from "react";
 import type { ChangeEvent, FocusEvent, FormEvent } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
-import AuthShell from "../components/AuthShell";
-import FormField from "../components/FormField";
+import AuthShell from "../components/auth/AuthShell";
+import FormField from "../components/ui/FormField";
 import { panelPath } from "../utils/paths";
 import { validateEmail, validateRequired } from "../utils/validation";
 import type { User } from "../types";

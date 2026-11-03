@@ -17,11 +17,11 @@ import {
   UserPlus,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import AnimatedNumber from "../components/AnimatedNumber";
-import AuctionImage from "../components/AuctionImage";
-import CountdownTimer from "../components/CountdownTimer";
-import Faq from "../components/Faq";
-import GithubIcon from "../components/GithubIcon";
+import AnimatedNumber from "../components/ui/AnimatedNumber";
+import AuctionImage from "../components/auction/AuctionImage";
+import CountdownTimer from "../components/auction/CountdownTimer";
+import Faq from "../components/landing/Faq";
+import GithubIcon from "../components/ui/GithubIcon";
 import { categories } from "../data/categories";
 import { partners } from "../data/partners";
 import { formatToman, getCurrentPrice, isEnded } from "../utils/auction";

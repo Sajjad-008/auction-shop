@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
-import { typeMeta } from "../utils/notificationTypes";
-import { timeAgo } from "../utils/auction";
-import type { AppNotification } from "../types";
+import { typeMeta } from "../../utils/notificationTypes";
+import { timeAgo } from "../../utils/auction";
+import type { AppNotification } from "../../types";
 
 interface Props {
   n: AppNotification;

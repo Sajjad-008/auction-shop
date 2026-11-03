@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Search, SearchX } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import AuctionCard from "../components/AuctionCard";
+import AuctionCard from "../components/auction/AuctionCard";
 import useAppContext from "../hooks/useAppContext";
 import { categories } from "../data/categories";
 import { matches } from "../utils/search";

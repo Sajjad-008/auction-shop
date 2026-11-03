@@ -1,4 +1,4 @@
-import type { TicketStatus } from "../types";
+import type { TicketStatus } from "../../types";
 
 const meta: Record<TicketStatus, { label: string; cls: string }> = {
   open: { label: "در انتظار پاسخ", cls: "bg-warning-soft text-warning" },

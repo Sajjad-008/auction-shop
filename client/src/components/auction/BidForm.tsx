@@ -1,14 +1,14 @@
 import { useState } from "react";
 import type { ChangeEvent } from "react";
 import { Link, useLocation } from "react-router-dom";
-import useAppContext from "../hooks/useAppContext";
+import useAppContext from "../../hooks/useAppContext";
 import {
   getMinNextBid,
   isEnded,
   formatToman,
   toEnglishDigits,
-} from "../utils/auction";
-import type { Auction, BidResult } from "../types";
+} from "../../utils/auction";
+import type { Auction, BidResult } from "../../types";
 
 interface Props {
   auction: Auction;

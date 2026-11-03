@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown } from "lucide-react";
-import type { Option } from "../types";
+import type { Option } from "../../types";
 
 interface Props<K extends string> {
   value: K;
