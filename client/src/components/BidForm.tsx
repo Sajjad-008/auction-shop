@@ -54,7 +54,15 @@ export default function BidForm({ auction, onBid }: Props) {
         </p>
       </div>
     );
-
+  if (user?.role === "seller" && !ended)
+    return (
+      <div className="rounded-xl border border-line bg-bg p-4 text-sm">
+        <p className="font-medium">حساب فروشنده نمی‌تونه پیشنهاد بده.</p>
+        <p className="mt-1 text-xs text-muted">
+          برای ثبت پیشنهاد، با یه حساب خریدار وارد شو.
+        </p>
+      </div>
+    );
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(toEnglishDigits(e.target.value));
     setConfirming(false);

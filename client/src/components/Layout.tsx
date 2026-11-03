@@ -29,13 +29,19 @@ export default function Layout({
       ? auctions.filter((a) => favorites.includes(a.id)).length
       : 0,
     notifications: user ? notifications.unread : 0,
+    sellerAuctions: user
+      ? auctions.filter((a) => a.sellerEmail === user.email).length
+      : 0,
   };
   categories.forEach((c) => {
     counts[c.key] = auctions.filter((a) => a.category === c.key).length;
   });
 
   let title = "همه مزایده‌ها";
-  if (pathname === "/active") title = "مزایده‌های فعال";
+  if (pathname === "/seller") title = "داشبورد فروشنده";
+  else if (pathname === "/seller/auctions") title = "مزایده‌های من";
+  else if (pathname === "/seller/new") title = "ساخت مزایده‌ی جدید";
+  else if (pathname === "/active") title = "مزایده‌های فعال";
   else if (pathname === "/my-bids") title = "پیشنهادهای من";
   else if (pathname === "/favorites") title = "علاقه‌مندی‌ها";
   else if (pathname === "/notifications") title = "اعلان‌ها";

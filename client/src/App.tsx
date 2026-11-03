@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
+import RoleGuard from "./components/RoleGuard";
 import Home from "./pages/Home";
 import ActiveAuctions from "./pages/ActiveAuctions";
 import AuctionDetail from "./pages/AuctionDetail";
@@ -14,6 +15,9 @@ import TicketChat from "./pages/TicketChat";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Landing from "./pages/Landing";
+import SellerDashboard from "./pages/seller/SellerDashboard";
+import SellerAuctions from "./pages/seller/SellerAuctions";
+import NewAuction from "./pages/seller/NewAuction";
 import useTheme from "./hooks/useTheme";
 import { initialAuctions } from "./data/auctions";
 import { initialNotifications } from "./data/notifications";
@@ -21,9 +25,11 @@ import { autoReplies } from "./data/ticketCategories";
 import { getMinNextBid, isEnded, formatToman, ME } from "./utils/auction";
 import { faNum } from "./utils/ticket";
 import type {
+  Account,
   AppNotification,
   Auction,
   BidResult,
+  NewAuctionInput,
   NewTicketInput,
   NotificationsApi,
   Ticket,
@@ -55,11 +61,22 @@ const save = (key: string, value: unknown): void => {
 };
 
 const msgId = () => `m${Date.now()}${Math.random().toString(36).slice(2, 6)}`;
+const emailKey = (email: string) => email.trim().toLowerCase();
+
+// کاربرهای ذخیره‌شده‌ی قدیمی نقش نداشتند
+const loadUser = (): User | null => {
+  const u = load<User | null>("user", null);
+  return u ? { ...u, role: u.role ?? "buyer" } : null;
+};
 
 export default function App() {
-  const [auctions, setAuctions] = useState<Auction[]>(initialAuctions);
-  const [user, setUser] = useState<User | null>(() =>
-    load<User | null>("user", null),
+  const [auctions, setAuctions] = useState<Auction[]>(() => [
+    ...load<Auction[]>("userAuctions", []),
+    ...initialAuctions,
+  ]);
+  const [user, setUser] = useState<User | null>(loadUser);
+  const [accounts, setAccounts] = useState<Record<string, Account>>(() =>
+    load<Record<string, Account>>("accounts", {}),
   );
   const [favorites, setFavorites] = useState<number[]>(() =>
     load<number[]>("favorites", []),
@@ -75,6 +92,15 @@ export default function App() {
   useEffect(() => save("favorites", favorites), [favorites]);
   useEffect(() => save("notifications", items), [items]);
   useEffect(() => save("tickets", ticketItems), [ticketItems]);
+  useEffect(() => save("accounts", accounts), [accounts]);
+  useEffect(
+    () =>
+      save(
+        "userAuctions",
+        auctions.filter((a) => a.sellerEmail),
+      ),
+    [auctions],
+  );
 
   const addNotification = (n: NewNotification) =>
     setItems((prev) => [
@@ -195,7 +221,7 @@ export default function App() {
       ),
   };
 
-  const login = (u: User) => {
+  const startSession = (u: User) => {
     setUser(u);
     save("user", u);
     addNotification({
@@ -204,6 +230,20 @@ export default function App() {
       text: `با ایمیل ${u.email} وارد حسابت شدی.`,
     });
   };
+
+  const login = (u: User) => {
+    const known = accounts[emailKey(u.email)];
+    startSession(known ? { ...u, name: known.name, role: known.role } : u);
+  };
+
+  const register = (u: User) => {
+    setAccounts((prev) => ({
+      ...prev,
+      [emailKey(u.email)]: { name: u.name, role: u.role },
+    }));
+    startSession(u);
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
@@ -216,6 +256,11 @@ export default function App() {
 
   const placeBid = (id: number, amount: number): BidResult => {
     if (!user) return { ok: false, message: "برای ثبت پیشنهاد اول وارد شو." };
+    if (user.role === "seller")
+      return {
+        ok: false,
+        message: "حساب فروشنده نمی‌تونه پیشنهاد بده. با حساب خریدار وارد شو.",
+      };
     const a = auctions.find((x) => x.id === id);
     if (!a) return { ok: false, message: "مزایده پیدا نشد." };
     if (isEnded(a))
@@ -251,7 +296,44 @@ export default function App() {
     return { ok: true, message: "پیشنهادت ثبت شد." };
   };
 
+  const createAuction = (input: NewAuctionInput): number => {
+    const id = auctions.reduce((m, a) => Math.max(m, a.id), 0) + 1;
+    const auction: Auction = {
+      id,
+      category: input.category,
+      title: input.title,
+      image: input.image,
+      description: input.description,
+      startPrice: input.startPrice,
+      bidStep: input.bidStep,
+      endAt: new Date(
+        Date.now() + input.durationMinutes * 60 * 1000,
+      ).toISOString(),
+      bids: [],
+      sellerEmail: user?.email,
+    };
+    setAuctions((prev) => [auction, ...prev]);
+    addNotification({
+      type: "system",
+      title: "مزایده منتشر شد",
+      text: `مزایده‌ی «${input.title}» منتشر شد.`,
+      link: `/auction/${id}`,
+    });
+    return id;
+  };
+
+  const deleteAuction = (id: number): BidResult => {
+    const a = auctions.find((x) => x.id === id);
+    if (!a || a.sellerEmail !== user?.email)
+      return { ok: false, message: "فقط صاحب مزایده می‌تونه اون رو حذف کنه." };
+    if (a.bids.length > 0)
+      return { ok: false, message: "مزایده‌ای که پیشنهاد دارد قابل حذف نیست." };
+    setAuctions((prev) => prev.filter((x) => x.id !== id));
+    return { ok: true, message: `مزایده‌ی «${a.title}» حذف شد.` };
+  };
+
   const themeProps = { dark, onToggleTheme: toggleTheme };
+  const homePath = user?.role === "seller" ? "/seller" : "/auctions";
 
   return (
     <Routes>
@@ -259,7 +341,7 @@ export default function App() {
         path="/"
         element={
           user ? (
-            <Navigate to="/auctions" replace />
+            <Navigate to={homePath} replace />
           ) : (
             <Landing auctions={auctions} {...themeProps} />
           )
@@ -271,7 +353,7 @@ export default function App() {
       />
       <Route
         path="/signup"
-        element={<Signup user={user} onAuth={login} {...themeProps} />}
+        element={<Signup user={user} onRegister={register} {...themeProps} />}
       />
 
       <Route
@@ -279,6 +361,8 @@ export default function App() {
           <Layout
             auctions={auctions}
             placeBid={placeBid}
+            createAuction={createAuction}
+            deleteAuction={deleteAuction}
             user={user}
             favorites={favorites}
             toggleFavorite={toggleFavorite}
@@ -292,14 +376,53 @@ export default function App() {
         <Route path="/auctions" element={<Home />} />
         <Route path="/active" element={<ActiveAuctions />} />
         <Route path="/category/:key" element={<Home />} />
-        <Route path="/my-bids" element={<MyBids />} />
-        <Route path="/favorites" element={<Favorites />} />
+        <Route
+          path="/my-bids"
+          element={
+            <RoleGuard role="buyer" guestOk>
+              <MyBids />
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/favorites"
+          element={
+            <RoleGuard role="buyer" guestOk>
+              <Favorites />
+            </RoleGuard>
+          }
+        />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/search" element={<SearchResults />} />
         <Route path="/support" element={<Support />} />
         <Route path="/support/new" element={<NewTicket />} />
         <Route path="/support/:number" element={<TicketChat />} />
         <Route path="/auction/:id" element={<AuctionDetail />} />
+
+        <Route
+          path="/seller"
+          element={
+            <RoleGuard role="seller">
+              <SellerDashboard />
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/seller/auctions"
+          element={
+            <RoleGuard role="seller">
+              <SellerAuctions />
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/seller/new"
+          element={
+            <RoleGuard role="seller">
+              <NewAuction />
+            </RoleGuard>
+          }
+        />
       </Route>
     </Routes>
   );

@@ -354,7 +354,7 @@ export default function Landing({ auctions, dark, onToggleTheme }: Props) {
                   کالایی داری؟ بذارش به مزایده
                 </h2>
                 <span className="rounded-full bg-surface px-3 py-1 text-xs font-bold text-muted">
-                  پنل فروشنده: به‌زودی
+                  پنل ویژه‌ی فروشنده
                 </span>
               </div>
               <p className="leading-8 text-muted">
@@ -370,8 +370,12 @@ export default function Landing({ auctions, dark, onToggleTheme }: Props) {
                 ))}
               </ul>
             </div>
-            <Link to="/signup" className={`text-center ${primaryBtn}`}>
-              ثبت‌نام و شروع
+            <Link
+              to="/signup"
+              state={{ role: "seller" }}
+              className={`text-center ${primaryBtn}`}
+            >
+              ثبت‌نام به‌عنوان فروشنده
             </Link>
           </div>
         </section>

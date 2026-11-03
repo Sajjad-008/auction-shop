@@ -5,6 +5,8 @@ export type CategoryKey =
   | "art"
   | "cars";
 
+export type Role = "buyer" | "seller";
+
 export interface Bid {
   user: string;
   amount: number;
@@ -21,11 +23,28 @@ export interface Auction {
   bidStep: number;
   endAt: string;
   bids: Bid[];
+  sellerEmail?: string;
 }
 
 export interface User {
   name: string;
   email: string;
+  role: Role;
+}
+
+export interface Account {
+  name: string;
+  role: Role;
+}
+
+export interface NewAuctionInput {
+  title: string;
+  category: CategoryKey;
+  description: string;
+  startPrice: number;
+  bidStep: number;
+  durationMinutes: number;
+  image: string;
 }
 
 export type MyStatus = "leading" | "outbid" | "won" | "lost";
@@ -101,10 +120,11 @@ export interface TicketsApi {
   setStatus: (number: number, status: TicketStatus) => void;
 }
 
-// چیزی که Layout از طریق Outlet به صفحه‌ها می‌دهد
 export interface AppContext {
   auctions: Auction[];
   placeBid: (id: number, amount: number) => BidResult;
+  createAuction: (input: NewAuctionInput) => number;
+  deleteAuction: (id: number) => BidResult;
   user: User | null;
   favorites: number[];
   toggleFavorite: (id: number) => void;
