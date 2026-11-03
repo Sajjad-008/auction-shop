@@ -39,7 +39,7 @@ export default function Login({ user, onAuth, dark, onToggleTheme }: Props) {
     setSubmitted(true);
     if (Object.values(errors).some(Boolean)) return;
     const email = values.email.trim();
-    onAuth({ name: email.split("@")[0], email });
+    onAuth({ name: email.split("@")[0], email, role: "buyer" });
     navigate(from, { replace: true });
   };
 

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import type { ChangeEvent, FocusEvent, FormEvent } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { ShoppingBag, Store } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import AuthShell from "../components/AuthShell";
 import FormField from "../components/FormField";
 import {
@@ -9,18 +11,45 @@ import {
   validatePassword,
   validateConfirm,
 } from "../utils/validation";
-import type { User } from "../types";
+import type { Role, User } from "../types";
 
 interface Props {
   user: User | null;
-  onAuth: (user: User) => void;
+  onRegister: (user: User) => void;
   dark: boolean;
   onToggleTheme: () => void;
 }
 
-export default function Signup({ user, onAuth, dark, onToggleTheme }: Props) {
+const roleOptions: {
+  key: Role;
+  icon: LucideIcon;
+  title: string;
+  text: string;
+}[] = [
+  {
+    key: "buyer",
+    icon: ShoppingBag,
+    title: "خریدار",
+    text: "پیشنهاد می‌دم و مزایده‌ها رو دنبال می‌کنم.",
+  },
+  {
+    key: "seller",
+    icon: Store,
+    title: "فروشنده",
+    text: "کالام رو به مزایده می‌ذارم.",
+  },
+];
+
+export default function Signup({
+  user,
+  onRegister,
+  dark,
+  onToggleTheme,
+}: Props) {
   const navigate = useNavigate();
-  const from = (useLocation().state as { from?: string } | null)?.from ?? "/";
+  const state = useLocation().state as { from?: string; role?: Role } | null;
+  const from = state?.from ?? "/";
+  const [role, setRole] = useState<Role>(state?.role ?? "buyer");
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -54,7 +83,7 @@ export default function Signup({ user, onAuth, dark, onToggleTheme }: Props) {
     e.preventDefault();
     setSubmitted(true);
     if (Object.values(errors).some(Boolean)) return;
-    onAuth({ name: values.name.trim(), email: values.email.trim() });
+    onRegister({ name: values.name.trim(), email: values.email.trim(), role });
     navigate(from, { replace: true });
   };
 
@@ -78,6 +107,43 @@ export default function Signup({ user, onAuth, dark, onToggleTheme }: Props) {
       }
     >
       <form onSubmit={handleSubmit} noValidate className="space-y-4">
+        <div className="space-y-1.5">
+          <span id="role-label" className="block text-sm font-medium">
+            نوع حساب
+          </span>
+          <div
+            role="radiogroup"
+            aria-labelledby="role-label"
+            className="grid grid-cols-2 gap-3"
+          >
+            {roleOptions.map((r) => {
+              const on = role === r.key;
+              return (
+                <button
+                  key={r.key}
+                  type="button"
+                  role="radio"
+                  aria-checked={on}
+                  onClick={() => setRole(r.key)}
+                  className={`space-y-1 rounded-xl border p-3 text-right transition-colors active:bg-primary-soft ${
+                    on
+                      ? "border-primary bg-primary-soft"
+                      : "border-line bg-surface hover:bg-hover"
+                  }`}
+                >
+                  <span
+                    className={`flex items-center gap-2 font-bold ${on ? "text-primary" : ""}`}
+                  >
+                    <r.icon size={18} />
+                    {r.title}
+                  </span>
+                  <span className="block text-xs text-muted">{r.text}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         <FormField
           label="نام و نام خانوادگی"
           name="name"

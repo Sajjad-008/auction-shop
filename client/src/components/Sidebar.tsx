@@ -1,13 +1,16 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
   Bell,
   CircleDollarSign,
+  CirclePlus,
   Gavel,
   Heart,
   House,
+  LayoutDashboard,
   LifeBuoy,
   List,
   LogOut,
+  Package,
   X,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -63,6 +66,9 @@ export default function Sidebar({
   open,
   onClose,
 }: Props) {
+  const isSeller = user?.role === "seller";
+  const navigate = useNavigate();
+
   return (
     <>
       {open && (
@@ -78,12 +84,16 @@ export default function Sidebar({
         }`}
       >
         <div className="mb-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xl font-bold text-primary">
+          <Link
+            to="/"
+            onClick={onClose}
+            className="flex items-center gap-2 text-xl font-bold text-primary"
+          >
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-btn text-white">
               <Gavel size={20} />
             </span>
             مزایده‌گاه
-          </div>
+          </Link>
           <button
             onClick={onClose}
             className="rounded-lg p-1.5 hover:bg-hover active:bg-primary-soft lg:hidden"
@@ -93,59 +103,112 @@ export default function Sidebar({
           </button>
         </div>
 
-        <p className="px-3 pt-2 text-xs font-bold text-muted">منو</p>
-        <Item
-          to="/auctions"
-          icon={House}
-          label="همه مزایده‌ها"
-          onClick={onClose}
-        />
-        <Item
-          to="/active"
-          icon={List}
-          label="مزایده‌های فعال"
-          count={counts.active}
-          onClick={onClose}
-        />
-        <Item
-          to="/my-bids"
-          icon={CircleDollarSign}
-          label="پیشنهادهای من"
-          count={counts.myBids}
-          onClick={onClose}
-        />
-        <Item
-          to="/favorites"
-          icon={Heart}
-          label="علاقه‌مندی‌ها"
-          count={counts.favorites}
-          onClick={onClose}
-        />
-        <Item
-          to="/notifications"
-          icon={Bell}
-          label="اعلان‌ها"
-          count={counts.notifications}
-          onClick={onClose}
-        />
-        <Item
-          to="/support"
-          icon={LifeBuoy}
-          label="پشتیبانی"
-          onClick={onClose}
-        />
+        {isSeller ? (
+          <>
+            <p className="px-3 pt-2 text-xs font-bold text-muted">
+              پنل فروشنده
+            </p>
+            <Item
+              to="/seller"
+              end
+              icon={LayoutDashboard}
+              label="داشبورد"
+              onClick={onClose}
+            />
+            <Item
+              to="/seller/auctions"
+              icon={Package}
+              label="مزایده‌های من"
+              count={counts.sellerAuctions}
+              onClick={onClose}
+            />
+            <Item
+              to="/seller/new"
+              icon={CirclePlus}
+              label="ساخت مزایده"
+              onClick={onClose}
+            />
 
-        <p className="px-3 pt-4 text-xs font-bold text-muted">دسته‌بندی‌ها</p>
-        {categories.map((c) => (
-          <Item
-            key={c.key}
-            to={`/category/${c.key}`}
-            icon={c.icon}
-            label={c.label}
-            count={counts[c.key]}
-            onClick={onClose}
-          />
-        ))}
+            <p className="px-3 pt-4 text-xs font-bold text-muted">عمومی</p>
+            <Item
+              to="/auctions"
+              icon={House}
+              label="مشاهده‌ی سایت"
+              onClick={onClose}
+            />
+            <Item
+              to="/notifications"
+              icon={Bell}
+              label="اعلان‌ها"
+              count={counts.notifications}
+              onClick={onClose}
+            />
+            <Item
+              to="/support"
+              icon={LifeBuoy}
+              label="پشتیبانی"
+              onClick={onClose}
+            />
+          </>
+        ) : (
+          <>
+            <p className="px-3 pt-2 text-xs font-bold text-muted">منو</p>
+            <Item
+              to="/auctions"
+              icon={House}
+              label="همه مزایده‌ها"
+              onClick={onClose}
+            />
+            <Item
+              to="/active"
+              icon={List}
+              label="مزایده‌های فعال"
+              count={counts.active}
+              onClick={onClose}
+            />
+            <Item
+              to="/my-bids"
+              icon={CircleDollarSign}
+              label="پیشنهادهای من"
+              count={counts.myBids}
+              onClick={onClose}
+            />
+            <Item
+              to="/favorites"
+              icon={Heart}
+              label="علاقه‌مندی‌ها"
+              count={counts.favorites}
+              onClick={onClose}
+            />
+            <Item
+              to="/notifications"
+              icon={Bell}
+              label="اعلان‌ها"
+              count={counts.notifications}
+              onClick={onClose}
+            />
+            <Item
+              to="/support"
+              icon={LifeBuoy}
+              label="پشتیبانی"
+              onClick={onClose}
+            />
+
+            <p className="px-3 pt-4 text-xs font-bold text-muted">
+              دسته‌بندی‌ها
+            </p>
+            {categories.map((c) => (
+              <Item
+                key={c.key}
+                to={`/category/${c.key}`}
+                icon={c.icon}
+                label={c.label}
+                count={counts[c.key]}
+                onClick={onClose}
+              />
+            ))}
+          </>
+        )}
 
         <div className="mt-auto pt-4">
           {user ? (
@@ -155,14 +218,15 @@ export default function Sidebar({
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-bold">{user.name}</p>
-                <p dir="ltr" className="truncate text-right text-xs text-muted">
-                  {user.email}
+                <p className="text-xs font-medium text-primary">
+                  {isSeller ? "حساب فروشنده" : "حساب خریدار"}
                 </p>
               </div>
               <button
                 onClick={() => {
                   onLogout();
                   onClose();
+                  navigate("/");
                 }}
                 aria-label="خروج"
                 className="rounded-lg p-1.5 text-danger transition-colors hover:bg-hover active:bg-danger-soft"

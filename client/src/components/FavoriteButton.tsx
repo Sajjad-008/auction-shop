@@ -13,6 +13,7 @@ export default function FavoriteButton({ auctionId, className = "" }: Props) {
   const { pathname } = useLocation();
   const active = !!user && favorites.includes(auctionId);
   const label = active ? "حذف از علاقه‌مندی‌ها" : "افزودن به علاقه‌مندی‌ها";
+  if (user?.role === "seller") return null;
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
