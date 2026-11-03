@@ -22,7 +22,6 @@ export default function SearchBox() {
     pathname === "/search" ? (params.get("cat") ?? "all") : "all",
   );
 
-  // وقتی روی صفحه‌ی نتایج هستیم و آدرس عوض می‌شه، فیلدها همگام بمونن
   useEffect(() => {
     if (pathname === "/search") {
       setQ(params.get("q") ?? "");
