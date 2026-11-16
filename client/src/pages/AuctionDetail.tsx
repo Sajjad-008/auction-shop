@@ -1,11 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import AuctionImage from "../components/auction/AuctionImage";
-import CountdownTimer from "../components/auction/CountdownTimer";
-import FavoriteButton from "../components/auction/FavoriteButton";
-import StatusBadge from "../components/auction/StatusBadge";
 import BidForm from "../components/auction/BidForm";
 import BidHistory from "../components/auction/BidHistory";
+import CountdownTimer from "../components/auction/CountdownTimer";
+import FavoriteButton from "../components/auction/FavoriteButton";
+import PriceChart from "../components/auction/PriceChart";
+import StatusBadge from "../components/auction/StatusBadge";
 import useAppContext from "../hooks/useAppContext";
 import { getCurrentPrice, getMyStatus, formatToman } from "../utils/auction";
 
@@ -17,7 +18,7 @@ export default function AuctionDetail() {
   if (!auction)
     return (
       <div className="space-y-3">
-        <p>این مزایده پیدا نشد.</p>
+        <p>این مزایده یافت نشد.</p>
         <Link to="/auctions" className="text-primary hover:underline">
           بازگشت به لیست
         </Link>
@@ -45,6 +46,10 @@ export default function AuctionDetail() {
           <section className="space-y-2">
             <h2 className="text-lg font-bold">توضیحات</h2>
             <p className="leading-8 text-muted">{auction.description}</p>
+          </section>
+          <section className="space-y-3">
+            <h2 className="text-lg font-bold">نمودار تغییرات قیمت</h2>
+            <PriceChart auction={auction} />
           </section>
           <section className="space-y-3">
             <h2 className="text-lg font-bold">تاریخچه پیشنهادها</h2>
