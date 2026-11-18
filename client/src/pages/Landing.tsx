@@ -27,6 +27,7 @@ import { partners } from "../data/partners";
 import { formatToman, getCurrentPrice, isEnded } from "../utils/auction";
 import { panelPath } from "../utils/paths";
 import type { Auction, User } from "../types";
+import HeroAnimation from "../components/landing/HeroAnimation";
 
 interface Props {
   auctions: Auction[];
@@ -210,7 +211,8 @@ export default function Landing({
       <main>
         <section className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-12 md:py-20 lg:grid-cols-2">
           <div className="space-y-6">
-            <span className="inline-block rounded-full bg-primary-soft px-4 py-1 text-sm font-medium text-primary">
+            <span className="inline-flex items-center gap-2 rounded-full bg-primary-soft px-4 py-1 text-sm font-medium text-primary">
+              <HeroAnimation />
               مزایده‌ی آنلاین
             </span>
             <h1 className="text-4xl font-bold leading-tight sm:text-5xl">
