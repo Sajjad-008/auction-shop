@@ -45,7 +45,7 @@ export default function SellerAuctionRow({ auction, onDelete }: Props) {
         {onDelete &&
           (confirming ? (
             <div className="flex items-center gap-2 text-sm">
-              <span className="text-muted">حذف بشه؟</span>
+              <span className="text-muted">حذف شود؟</span>
               <button
                 onClick={() => onDelete(auction.id)}
                 className="rounded-lg bg-danger-soft px-3 py-1.5 font-bold text-danger transition-colors hover:bg-hover"

@@ -78,7 +78,7 @@ export default function SellerAuctions() {
           <Package size={40} className="text-muted" />
           <p className="text-muted">
             {mine.length === 0
-              ? "هنوز مزایده‌ای نساختی."
+              ? "هنوز مزایده‌ای ایجاد نکرده‌اید."
               : "مزایده‌ای در این بخش نیست."}
           </p>
           {mine.length === 0 && (

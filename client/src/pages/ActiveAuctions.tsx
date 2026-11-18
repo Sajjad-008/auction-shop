@@ -26,7 +26,7 @@ const filters: FilterDef[] = [
   { key: "all", label: "همه", test: () => true },
   {
     key: "soon",
-    label: "به‌زودی تموم می‌شه",
+    label: "به‌زودی پایان می‌یابد",
     hint: "کمتر از ۲ ساعت مانده",
     test: (a) => new Date(a.endAt).getTime() - Date.now() < 2 * HOUR,
   },

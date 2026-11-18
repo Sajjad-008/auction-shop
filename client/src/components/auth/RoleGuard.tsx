@@ -29,7 +29,7 @@ export default function RoleGuard({ role, guestOk = false, children }: Props) {
       <ShieldAlert size={40} className="text-muted" />
       <p className="text-muted">این بخش مخصوص حساب {labels[role]} است.</p>
       <Link to={home} className="font-bold text-primary hover:underline">
-        بازگشت به پنل خودت
+        بازگشت به پنل کاربری خود
       </Link>
     </div>
   );

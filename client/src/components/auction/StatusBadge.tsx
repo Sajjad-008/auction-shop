@@ -7,10 +7,10 @@ const styles: Record<MyStatus, string> = {
   lost: "bg-line text-muted",
 };
 const labels: Record<MyStatus, string> = {
-  leading: "در صدر هستی",
-  outbid: "پیشی گرفته شدی",
-  won: "برنده شدی",
-  lost: "برنده نشدی",
+  leading: "در صدر هستید",
+  outbid: "پیشی گرفته شدید",
+  won: "برنده شدید",
+  lost: "برنده نشدید",
 };
 
 export default function StatusBadge({ status }: { status: MyStatus | null }) {

@@ -34,7 +34,7 @@ export default function MyBids() {
     return (
       <div className="flex flex-col items-center gap-3 rounded-2xl border border-line bg-surface py-16 text-center">
         <CircleDollarSign size={40} className="text-muted" />
-        <p className="text-muted">برای دیدن پیشنهادهات اول وارد شو.</p>
+        <p className="text-muted">برای مشاهده‌ی پیشنهادهای خود، ابتدا وارد حساب کاربری شوید.</p>
         <Link
           to="/login"
           state={{ from: "/my-bids" }}
@@ -74,7 +74,7 @@ export default function MyBids() {
 
       {list.length === 0 ? (
         <p className="py-10 text-center text-muted">
-          پیشنهادی در این بخش نداری.
+          پیشنهادی در این بخش ندارید.
         </p>
       ) : (
         <div className="space-y-3">

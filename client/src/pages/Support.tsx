@@ -22,7 +22,7 @@ export default function Support() {
     return (
       <div className="flex flex-col items-center gap-3 rounded-2xl border border-line bg-surface py-16 text-center">
         <LifeBuoy size={40} className="text-muted" />
-        <p className="text-muted">برای ثبت یا دیدن تیکت‌ها اول وارد شو.</p>
+        <p className="text-muted">برای ثبت یا مشاهده‌ی تیکت‌ها، ابتدا وارد حساب کاربری شوید.</p>
         <Link
           to="/login"
           state={{ from: "/support" }}
@@ -81,7 +81,7 @@ export default function Support() {
           <LifeBuoy size={40} className="text-muted" />
           <p className="text-muted">
             {mine.length === 0
-              ? "هنوز تیکتی ثبت نکردی."
+              ? "هنوز تیکتی ثبت نکرده‌اید."
               : "تیکتی در این بخش نیست."}
           </p>
           {mine.length === 0 && (

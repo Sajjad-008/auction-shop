@@ -19,7 +19,7 @@ export default function Notifications() {
     return (
       <div className="flex flex-col items-center gap-3 rounded-2xl border border-line bg-surface py-16 text-center">
         <Bell size={40} className="text-muted" />
-        <p className="text-muted">برای دیدن اعلان‌هات اول وارد شو.</p>
+        <p className="text-muted">برای مشاهده‌ی اعلان‌های خود، ابتدا وارد حساب کاربری شوید.</p>
         <Link
           to="/login"
           state={{ from: "/notifications" }}
@@ -74,7 +74,7 @@ export default function Notifications() {
         <div className="flex flex-col items-center gap-3 rounded-2xl border border-line bg-surface py-16 text-center">
           <BellOff size={40} className="text-muted" />
           <p className="text-muted">
-            {tab === "unread" ? "همه‌ی اعلان‌ها رو خوندی." : "اعلانی نداری."}
+            {tab === "unread" ? "تمامی اعلان‌ها خوانده شده‌اند." : "اعلانی ندارید."}
           </p>
         </div>
       ) : (

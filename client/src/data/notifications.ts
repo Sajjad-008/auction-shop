@@ -1,4 +1,5 @@
 import type { AppNotification } from "../types";
+
 const ago = (m: number) => new Date(Date.now() - m * 60 * 1000).toISOString();
 
 export const initialNotifications: AppNotification[] = [
@@ -8,8 +9,8 @@ export const initialNotifications: AppNotification[] = [
     read: false,
     at: ago(9),
     link: "/auction/2",
-    title: "پیشنهاد بالاتر ثبت شد",
-    text: "کسی برای «گوشی هوشمند پرچمدار» پیشنهاد بالاتر از تو داد.",
+    title: "ثبت پیشنهاد بالاتر",
+    text: "برای «گوشی هوشمند پرچمدار» پیشنهادی بالاتر از پیشنهاد شما ثبت شد.",
   },
   {
     id: "seed-2",
@@ -17,8 +18,8 @@ export const initialNotifications: AppNotification[] = [
     read: false,
     at: ago(15),
     link: "/auction/6",
-    title: "مزایده در حال پایان",
-    text: "کمتر از یک ساعت تا پایان «تابلوی نقاشی رنگ‌روغن» مانده.",
+    title: "مزایده در آستانه‌ی پایان",
+    text: "کمتر از یک ساعت تا پایان مزایده‌ی «تابلوی نقاشی رنگ‌روغن» باقی مانده است.",
   },
   {
     id: "seed-3",
@@ -26,8 +27,8 @@ export const initialNotifications: AppNotification[] = [
     read: false,
     at: ago(10),
     link: "/auction/4",
-    title: "برنده شدی",
-    text: "تبریک! برنده‌ی مزایده‌ی «فرش دستباف کاشان» شدی.",
+    title: "برنده‌ی مزایده شدید",
+    text: "تبریک؛ شما برنده‌ی مزایده‌ی «فرش دستباف کاشان» شدید.",
   },
   {
     id: "seed-4",
@@ -35,7 +36,7 @@ export const initialNotifications: AppNotification[] = [
     read: true,
     at: ago(180),
     link: null,
-    title: "به مزایده‌گاه خوش اومدی",
-    text: "از اینجا می‌تونی اعلان‌های مزایده‌هات رو ببینی.",
+    title: "خوش آمدید",
+    text: "اعلان‌های مربوط به مزایده‌های شما از این بخش قابل مشاهده است.",
   },
 ];

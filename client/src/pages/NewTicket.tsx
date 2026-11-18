@@ -23,7 +23,7 @@ export default function NewTicket() {
     return (
       <div className="flex flex-col items-center gap-3 rounded-2xl border border-line bg-surface py-16 text-center">
         <LifeBuoy size={40} className="text-muted" />
-        <p className="text-muted">برای ثبت تیکت اول وارد شو.</p>
+        <p className="text-muted">برای ثبت تیکت، ابتدا وارد حساب کاربری شوید.</p>
         <Link
           to="/login"
           state={{ from: "/support/new" }}
@@ -103,7 +103,7 @@ export default function NewTicket() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onBlur={blur("message")}
-            placeholder="مشکل یا سؤالت رو با جزئیات بنویس..."
+            placeholder="مشکل یا پرسش خود را با جزئیات بنویسید..."
             aria-invalid={!!show("message")}
             className={`w-full resize-y rounded-xl border bg-bg px-4 py-3 outline-none transition-colors ${
               show("message")

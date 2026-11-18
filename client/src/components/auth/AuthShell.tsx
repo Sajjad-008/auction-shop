@@ -37,7 +37,7 @@ export default function AuthShell({
           <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-btn text-white">
             <Gavel size={22} />
           </span>
-          مزایده‌گاه
+          اوج‌بها
         </Link>
 
         <div className="space-y-1 text-center">

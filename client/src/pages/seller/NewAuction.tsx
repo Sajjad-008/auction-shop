@@ -126,7 +126,7 @@ export default function NewAuction() {
             onChange={setBidStep}
             onBlur={blur("bidStep")}
             error={show("bidStep")}
-            hint="هر پیشنهاد جدید حداقل این‌قدر بالاتر باشه"
+            hint="هر پیشنهاد جدید باید دست‌کم به این میزان بالاتر باشد"
           />
         </div>
 
@@ -150,7 +150,7 @@ export default function NewAuction() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             onBlur={blur("description")}
-            placeholder="وضعیت کالا، ملحقات و هر نکته‌ی مهم دیگه..."
+            placeholder="وضعیت کالا، ملحقات و هر نکته‌ی مهم دیگر را بنویسید..."
             aria-invalid={!!show("description")}
             className={`w-full resize-y rounded-xl border bg-bg px-4 py-3 outline-none transition-colors ${
               show("description")

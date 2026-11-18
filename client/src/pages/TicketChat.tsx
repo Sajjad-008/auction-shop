@@ -30,7 +30,7 @@ export default function TicketChat() {
     return (
       <div className="flex flex-col items-center gap-3 rounded-2xl border border-line bg-surface py-16 text-center">
         <LifeBuoy size={40} className="text-muted" />
-        <p className="text-muted">برای دیدن تیکت اول وارد شو.</p>
+        <p className="text-muted">برای مشاهده‌ی تیکت، ابتدا وارد حساب کاربری شوید.</p>
         <Link
           to="/login"
           state={{ from: `/support/${number}` }}
@@ -44,7 +44,7 @@ export default function TicketChat() {
   if (!ticket)
     return (
       <div className="space-y-3">
-        <p>این تیکت پیدا نشد.</p>
+        <p>این تیکت یافت نشد.</p>
         <Link to="/support" className="text-primary hover:underline">
           بازگشت به تیکت‌ها
         </Link>
@@ -155,7 +155,7 @@ export default function TicketChat() {
 
         {closed ? (
           <p className="border-t border-line p-4 text-center text-sm text-muted">
-            این تیکت بسته شده است. برای ادامه‌ی گفتگو، آن را بازگشایی کن.
+            این تیکت بسته شده است. برای ادامه‌ی گفتگو، آن را بازگشایی کنید.
           </p>
         ) : (
           <form onSubmit={send} className="space-y-3 border-t border-line p-4">
@@ -163,7 +163,7 @@ export default function TicketChat() {
               rows={2}
               value={text}
               onChange={(e) => setText(e.target.value)}
-              placeholder="پیامت رو بنویس..."
+              placeholder="پیام خود را بنویسید..."
               aria-label="متن پیام"
               className="w-full resize-none rounded-xl border border-line bg-bg px-4 py-3 outline-none transition-colors focus:border-primary"
             />
