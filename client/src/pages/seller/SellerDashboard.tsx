@@ -33,9 +33,9 @@ export default function SellerDashboard() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-surface p-5">
         <div className="space-y-1">
-          <h2 className="text-xl font-bold">سلام {user?.name}</h2>
+          <h2 className="text-xl font-bold">خوش آمدید، {user?.name}</h2>
           <p className="text-sm text-muted">
-            وضعیت مزایده‌هات رو از اینجا دنبال کن.
+            وضعیت مزایده‌های خود را از این بخش دنبال کنید.
           </p>
         </div>
         <Link
@@ -72,7 +72,7 @@ export default function SellerDashboard() {
               to="/seller/auctions"
               className="text-sm font-bold text-primary hover:underline"
             >
-              دیدن همه
+              مشاهده‌ی همه
             </Link>
           )}
         </div>
@@ -80,7 +80,7 @@ export default function SellerDashboard() {
         {recent.length === 0 ? (
           <div className="flex flex-col items-center gap-3 rounded-2xl border border-line bg-surface py-14 text-center">
             <Package size={40} className="text-muted" />
-            <p className="text-muted">هنوز مزایده‌ای نساختی.</p>
+            <p className="text-muted">هنوز مزایده‌ای ایجاد نکرده‌اید.</p>
             <Link
               to="/seller/new"
               className="font-bold text-primary hover:underline"

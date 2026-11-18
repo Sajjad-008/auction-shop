@@ -31,7 +31,7 @@ export default function SearchResults() {
   if (!q.trim() && !category)
     return (
       <Empty icon={Search}>
-        <p className="text-muted">عبارتی بنویس یا یه دسته‌بندی انتخاب کن.</p>
+        <p className="text-muted">عبارتی را بنویسید یا یک دسته‌بندی انتخاب کنید.</p>
       </Empty>
     );
 
@@ -56,7 +56,7 @@ export default function SearchResults() {
 
       {list.length === 0 ? (
         <Empty icon={SearchX}>
-          <p className="text-muted">چیزی پیدا نشد. عبارت دیگه‌ای امتحان کن.</p>
+          <p className="text-muted">نتیجه‌ای یافت نشد. عبارت دیگری را امتحان کنید.</p>
           {category && inAll.length > 0 && (
             <Link
               to={`/search?q=${encodeURIComponent(q.trim())}`}

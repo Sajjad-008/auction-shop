@@ -134,7 +134,7 @@ export default function App() {
       const first = category !== null;
       const text = category
         ? autoReplies[category]
-        : "پیامت رو دریافت کردیم و بررسی می‌کنیم.";
+        : "پیام شما دریافت شد و در حال بررسی است.";
       setTicketItems((prev) =>
         prev.map(
           (t): Ticket =>
@@ -161,7 +161,7 @@ export default function App() {
       addNotification({
         type: "support",
         title: "پاسخ پشتیبانی",
-        text: `برای تیکت #${faNum(number)} پیام جدید داری.`,
+        text: `برای تیکت #${faNum(number)} پیام جدیدی دارید.`,
         link: `/support/${number}`,
       });
     }, 1500);
@@ -225,7 +225,7 @@ export default function App() {
     addNotification({
       type: "system",
       title: "ورود به حساب",
-      text: `با ایمیل ${u.email} وارد حسابت شدی.`,
+      text: `با ایمیل ${u.email} وارد حساب کاربری خود شدید.`,
     });
   };
 
@@ -253,20 +253,20 @@ export default function App() {
     );
 
   const placeBid = (id: number, amount: number): BidResult => {
-    if (!user) return { ok: false, message: "برای ثبت پیشنهاد اول وارد شو." };
+    if (!user) return { ok: false, message: "برای ثبت پیشنهاد، ابتدا وارد حساب کاربری شوید." };
     if (user.role === "seller")
       return {
         ok: false,
-        message: "حساب فروشنده نمی‌تونه پیشنهاد بده. با حساب خریدار وارد شو.",
+        message: "حساب فروشنده امکان ثبت پیشنهاد ندارد. با حساب خریدار وارد شوید.",
       };
     const a = auctions.find((x) => x.id === id);
-    if (!a) return { ok: false, message: "مزایده پیدا نشد." };
+    if (!a) return { ok: false, message: "مزایده یافت نشد." };
     if (isEnded(a))
       return { ok: false, message: "این مزایده پایان یافته است." };
     if (a.bids[0]?.user === ME)
       return {
         ok: false,
-        message: "آخرین پیشنهاد مال خودته. منتظر پیشنهاد بعدی بمون.",
+        message: "آخرین پیشنهاد متعلق به شماست. لطفاً تا ثبت پیشنهاد بعدی منتظر بمانید.",
       };
     const min = getMinNextBid(a);
     if (amount < min)
@@ -287,11 +287,11 @@ export default function App() {
     );
     addNotification({
       type: "bid",
-      title: "پیشنهادت ثبت شد",
+      title: "پیشنهاد شما ثبت شد",
       text: `پیشنهاد ${formatToman(amount)} برای «${a.title}» ثبت شد.`,
       link: `/auction/${id}`,
     });
-    return { ok: true, message: "پیشنهادت ثبت شد." };
+    return { ok: true, message: "پیشنهاد شما ثبت شد." };
   };
 
   const createAuction = (input: NewAuctionInput): number => {
@@ -323,7 +323,7 @@ export default function App() {
   const deleteAuction = (id: number): BidResult => {
     const a = auctions.find((x) => x.id === id);
     if (!a || a.sellerEmail !== user?.email)
-      return { ok: false, message: "فقط صاحب مزایده می‌تونه اون رو حذف کنه." };
+      return { ok: false, message: "تنها صاحب مزایده می‌تواند آن را حذف کند." };
     if (a.bids.length > 0)
       return { ok: false, message: "مزایده‌ای که پیشنهاد دارد قابل حذف نیست." };
     setAuctions((prev) => prev.filter((x) => x.id !== id));

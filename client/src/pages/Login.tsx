@@ -45,18 +45,18 @@ export default function Login({ user, onAuth, dark, onToggleTheme }: Props) {
   return (
     <AuthShell
       title="ورود به حساب"
-      subtitle="برای ثبت پیشنهاد وارد شو"
+      subtitle="برای ثبت پیشنهاد وارد شوید"
       dark={dark}
       onToggleTheme={onToggleTheme}
       footer={
         <>
-          حساب نداری؟{" "}
+          حساب کاربری ندارید؟{" "}
           <Link
             to="/signup"
             state={{ from }}
             className="font-bold text-primary hover:underline"
           >
-            ثبت‌نام کن
+            ثبت‌نام کنید
           </Link>
         </>
       }

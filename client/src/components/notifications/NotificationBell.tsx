@@ -84,7 +84,7 @@ export default function NotificationBell({ n }: { n: NotificationsApi }) {
           {latest.length === 0 ? (
             <div className="flex flex-col items-center gap-2 py-8 text-muted">
               <BellOff size={28} />
-              <p className="text-sm">اعلانی نداری.</p>
+              <p className="text-sm">اعلانی ندارید.</p>
             </div>
           ) : (
             latest.map((item) => (

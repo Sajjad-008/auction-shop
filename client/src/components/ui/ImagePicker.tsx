@@ -44,7 +44,7 @@ export default function ImagePicker({ images, onChange, max = 2 }: Props) {
     }
 
     if (files.length > room)
-      setError(`حداکثر ${max.toLocaleString("fa-IR")} عکس می‌تونی بفرستی.`);
+      setError(`حداکثر ${max.toLocaleString("fa-IR")} عکس می‌توانید ارسال کنید.`);
     if (accepted.length) onChange([...images, ...accepted]);
   };
 

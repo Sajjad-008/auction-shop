@@ -31,13 +31,13 @@ const roleOptions: {
     key: "buyer",
     icon: ShoppingBag,
     title: "خریدار",
-    text: "پیشنهاد می‌دم و مزایده‌ها رو دنبال می‌کنم.",
+    text: "در مزایده‌ها پیشنهاد می‌دهم و آن‌ها را دنبال می‌کنم.",
   },
   {
     key: "seller",
     icon: Store,
     title: "فروشنده",
-    text: "کالام رو به مزایده می‌ذارم.",
+    text: "کالای خود را به مزایده می‌گذارم.",
   },
 ];
 
@@ -88,19 +88,19 @@ export default function Signup({
 
   return (
     <AuthShell
-      title="ساخت حساب جدید"
-      subtitle="با چند قدم ساده وارد مزایده‌ها شو"
+      title="ایجاد حساب کاربری جدید"
+      subtitle="با چند گام ساده وارد مزایده‌ها شوید"
       dark={dark}
       onToggleTheme={onToggleTheme}
       footer={
         <>
-          حساب داری؟{" "}
+          حساب کاربری دارید؟{" "}
           <Link
             to="/login"
             state={{ from }}
             className="font-bold text-primary hover:underline"
           >
-            وارد شو
+            وارد شوید
           </Link>
         </>
       }

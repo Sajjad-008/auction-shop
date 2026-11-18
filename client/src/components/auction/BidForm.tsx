@@ -30,7 +30,7 @@ export default function BidForm({ auction, onBid }: Props) {
     return (
       <div className="space-y-3">
         <div className="rounded-xl border border-line bg-bg p-4 text-sm">
-          <p className="font-medium">برای ثبت پیشنهاد باید وارد حسابت بشی.</p>
+          <p className="font-medium">برای ثبت پیشنهاد باید وارد حساب کاربری خود شوید.</p>
           <p className="mt-1 text-xs text-muted">
             حداقل پیشنهاد بعدی: {formatToman(min)}
           </p>
@@ -43,13 +43,13 @@ export default function BidForm({ auction, onBid }: Props) {
           ورود برای ثبت پیشنهاد
         </Link>
         <p className="text-center text-sm text-muted">
-          حساب نداری؟{" "}
+          حساب کاربری ندارید؟{" "}
           <Link
             to="/signup"
             state={{ from: pathname }}
             className="font-bold text-primary hover:underline"
           >
-            ثبت‌نام کن
+            ثبت‌نام کنید
           </Link>
         </p>
       </div>
@@ -57,9 +57,9 @@ export default function BidForm({ auction, onBid }: Props) {
   if (user?.role === "seller" && !ended)
     return (
       <div className="rounded-xl border border-line bg-bg p-4 text-sm">
-        <p className="font-medium">حساب فروشنده نمی‌تونه پیشنهاد بده.</p>
+        <p className="font-medium">حساب فروشنده امکان ثبت پیشنهاد ندارد.</p>
         <p className="mt-1 text-xs text-muted">
-          برای ثبت پیشنهاد، با یه حساب خریدار وارد شو.
+          برای ثبت پیشنهاد، با حساب خریدار وارد شوید.
         </p>
       </div>
     );
@@ -71,7 +71,7 @@ export default function BidForm({ auction, onBid }: Props) {
 
   const ask = () => {
     if (!amount)
-      return setFeedback({ ok: false, message: "مبلغ پیشنهادت رو وارد کن." });
+      return setFeedback({ ok: false, message: "مبلغ پیشنهاد خود را وارد کنید." });
     if (amount < min)
       return setFeedback({
         ok: false,

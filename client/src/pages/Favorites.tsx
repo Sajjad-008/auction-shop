@@ -20,7 +20,7 @@ export default function Favorites() {
   if (!user)
     return (
       <Empty
-        text="برای دیدن علاقه‌مندی‌هات اول وارد شو."
+        text="برای مشاهده‌ی علاقه‌مندی‌های خود، ابتدا وارد حساب کاربری شوید."
         action={
           <Link
             to="/login"
@@ -38,13 +38,13 @@ export default function Favorites() {
   if (list.length === 0)
     return (
       <Empty
-        text="هنوز مزایده‌ای رو علاقه‌مندی نکردی. روی قلب کارت‌ها بزن."
+        text="هنوز مزایده‌ای را به علاقه‌مندی‌ها اضافه نکرده‌اید. روی نماد قلب در کارت‌ها کلیک کنید."
         action={
           <Link
             to="/auctions"
             className="font-bold text-primary hover:underline"
           >
-            دیدن مزایده‌ها
+            مشاهده‌ی مزایده‌ها
           </Link>
         }
       />

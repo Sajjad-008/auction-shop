@@ -92,7 +92,7 @@ export default function Sidebar({
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-btn text-white">
               <Gavel size={20} />
             </span>
-            مزایده‌گاه
+            اوج‌بها
           </Link>
           <button
             onClick={onClose}

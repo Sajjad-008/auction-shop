@@ -45,18 +45,18 @@ interface Feature {
 const steps: Feature[] = [
   {
     icon: UserPlus,
-    title: "ثبت‌نام کن",
-    text: "با ایمیل در چند ثانیه حساب بساز. دیدن مزایده‌ها بدون ثبت‌نام هم آزاده.",
+    title: "ثبت‌نام کنید",
+    text: "با ایمیل خود در چند ثانیه حساب کاربری بسازید. مشاهده‌ی مزایده‌ها بدون ثبت‌نام نیز آزاد است.",
   },
   {
     icon: CircleDollarSign,
-    title: "پیشنهاد بده",
-    text: "مزایده‌ی مورد نظرت رو انتخاب کن و پیشنهادی بالاتر از قیمت فعلی ثبت کن.",
+    title: "پیشنهاد دهید",
+    text: "مزایده‌ی مورد نظر خود را انتخاب کنید و پیشنهادی بالاتر از قیمت فعلی ثبت کنید.",
   },
   {
     icon: Trophy,
-    title: "برنده شو",
-    text: "اگه تا پایان زمان در صدر باشی، برنده‌ی مزایده‌ای و اعلانش رو می‌گیری.",
+    title: "برنده شوید",
+    text: "اگر تا پایان زمان مزایده بالاترین پیشنهاد از آنِ شما باشد، برنده‌ی مزایده خواهید بود و اعلان آن را دریافت می‌کنید.",
   },
 ];
 
@@ -64,29 +64,29 @@ const reasons: Feature[] = [
   {
     icon: Timer,
     title: "تایمر زنده",
-    text: "زمان باقی‌مونده هر لحظه نشون داده می‌شه و در ۵ دقیقه‌ی آخر قرمز می‌شه.",
+    text: "زمان باقی‌مانده در هر لحظه نمایش داده می‌شود و در ۵ دقیقه‌ی پایانی به رنگ قرمز درمی‌آید.",
   },
   {
     icon: History,
     title: "تاریخچه‌ی شفاف",
-    text: "همه‌ی پیشنهادهای هر مزایده با مبلغ و زمانشون قابل مشاهده‌ست.",
+    text: "تمامی پیشنهادهای هر مزایده با مبلغ و زمان ثبت قابل مشاهده است.",
   },
   {
     icon: ShieldCheck,
     title: "قوانین مشخص",
-    text: "حداقل گام پیشنهاد معلومه و قبل از ثبت هر پیشنهاد، تأیید گرفته می‌شه.",
+    text: "حداقل گام پیشنهاد مشخص است و پیش از ثبت هر پیشنهاد، تأیید شما دریافت می‌شود.",
   },
   {
     icon: LifeBuoy,
     title: "پشتیبانی تیکتی",
-    text: "هر سؤال یا مشکلی رو با دسته‌بندی و عکس برای پشتیبانی بفرست.",
+    text: "هر پرسش یا مشکل را همراه با دسته‌بندی و تصویر برای پشتیبانی ارسال کنید.",
   },
 ];
 
 const sellerPoints = [
-  "قیمت پایه و گام پیشنهاد رو خودت تعیین می‌کنی.",
-  "تاریخچه‌ی پیشنهادها تا آخر مزایده شفاف می‌مونه.",
-  "با اعلان و تیکت از همه‌چیز باخبر می‌شی.",
+  "قیمت پایه و گام پیشنهاد را خودتان تعیین می‌کنید.",
+  "تاریخچه‌ی پیشنهادها تا پایان مزایده شفاف باقی می‌ماند.",
+  "با اعلان‌ها و تیکت‌ها از همه‌چیز مطلع می‌شوید.",
 ];
 
 function SectionHead({ title, text }: { title: string; text?: string }) {
@@ -138,7 +138,7 @@ export default function Landing({
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-btn text-white">
               <Gavel size={20} />
             </span>
-            مزایده‌گاه
+            اوج‌بها
           </Link>
 
           <nav
@@ -149,7 +149,7 @@ export default function Landing({
               href="#how"
               className="text-muted transition-colors hover:text-fg"
             >
-              چطور کار می‌کنه؟
+              چگونه کار می‌کند؟
             </a>
             <a
               href="#why"
@@ -216,11 +216,11 @@ export default function Landing({
               مزایده‌ی آنلاین
             </span>
             <h1 className="text-4xl font-bold leading-tight sm:text-5xl">
-              پیشنهاد بده، <span className="text-primary">برنده شو</span>
+              پیشنهاد بده، <span className="text-primary">برنده شوید</span>
             </h1>
             <p className="max-w-xl text-lg leading-8 text-muted">
               تایمر زنده، قیمت‌های شفاف و تاریخچه‌ی کامل پیشنهادها. توی
-              مزایده‌گاه همه‌چیز جلوی چشم توئه.
+              اوج‌بها همه‌چیز جلوی چشم توئه.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
@@ -231,12 +231,12 @@ export default function Landing({
                 <ArrowLeft size={18} />
               </Link>
               <a href="#how" className={outlineBtn}>
-                چطور کار می‌کنه؟
+                چگونه کار می‌کند؟
               </a>
             </div>
             {!user && (
               <p className="text-sm text-muted">
-                دیدن مزایده‌ها نیازی به ثبت‌نام نداره.
+                مشاهده‌ی مزایده‌ها نیازی به ثبت‌نام ندارد.
               </p>
             )}
           </div>
@@ -272,8 +272,8 @@ export default function Landing({
 
         <section id="how" className="mx-auto max-w-6xl scroll-mt-24 px-4 py-12">
           <SectionHead
-            title="چطور کار می‌کنه؟"
-            text="فقط سه قدم تا برنده شدن."
+            title="چگونه کار می‌کند؟"
+            text="تنها سه گام تا برنده شدن."
           />
           <div className="grid gap-4 md:grid-cols-3">
             {steps.map((s, i) => (
@@ -319,7 +319,7 @@ export default function Landing({
         <section id="why" className="mx-auto max-w-6xl scroll-mt-24 px-4 py-12">
           <SectionHead
             title="چرا مزایده‌گاه؟"
-            text="هر چیزی که برای یه مزایده‌ی قابل‌اعتماد لازمه."
+            text="هر آنچه برای یک مزایده‌ی قابل‌اعتماد لازم است."
           />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {reasons.map((r) => (
@@ -343,7 +343,7 @@ export default function Landing({
         >
           <SectionHead
             title="همکاران ما"
-            text="با مجموعه‌هایی همکاری می‌کنیم که خرید و فروش رو مطمئن‌تر و راحت‌تر می‌کنن."
+            text="با مجموعه‌هایی همکاری می‌کنیم که خرید و فروش را مطمئن‌تر و آسان‌تر می‌کنند."
           />
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
             {partners.map((p) => (
@@ -366,7 +366,7 @@ export default function Landing({
           </div>
           <p className="mt-6 flex items-center justify-center gap-2 text-sm text-muted">
             <Handshake size={18} className="text-primary" />
-            مجموعه‌ی شما هم می‌خواد همکار ما بشه؟ از بخش پشتیبانی تیکت بزن.
+            مایل به همکاری با ما هستید؟ از بخش پشتیبانی تیکت ثبت کنید.
           </p>
         </section>
 
@@ -379,7 +379,7 @@ export default function Landing({
               <div className="flex flex-wrap items-center gap-3">
                 <Store size={26} className="text-primary" />
                 <h2 className="text-2xl font-bold">
-                  کالایی داری؟ بذارش به مزایده
+                  کالایی برای فروش دارید؟ آن را به مزایده بگذارید
                 </h2>
                 <span className="rounded-full bg-surface px-3 py-1 text-xs font-bold text-muted">
                   پنل ویژه‌ی فروشنده
@@ -419,7 +419,7 @@ export default function Landing({
         <section id="faq" className="mx-auto max-w-3xl scroll-mt-24 px-4 py-12">
           <SectionHead
             title="سؤالات متداول"
-            text="جواب چیزهایی که بیشتر پرسیده می‌شه."
+            text="پاسخ پرسش‌هایی که بیشتر مطرح می‌شوند."
           />
           <Faq />
         </section>
@@ -427,12 +427,12 @@ export default function Landing({
         <section className="mx-auto max-w-6xl px-4 py-12">
           <div className="space-y-5 rounded-3xl border border-line bg-surface px-6 py-12 text-center">
             <h2 className="text-2xl font-bold sm:text-3xl">
-              {user ? "برگرد به پنلت" : "آماده‌ای شروع کنی؟"}
+              {user ? "بازگشت به پنل کاربری" : "آماده‌ی شروع هستید؟"}
             </h2>
             <p className="text-muted">
               {user
-                ? "مزایده‌هات اون‌جا منتظرتن."
-                : "ثبت‌نام چند ثانیه بیشتر طول نمی‌کشه."}
+                ? "مزایده‌های شما در پنل در انتظار شما هستند."
+                : "ثبت‌نام تنها چند ثانیه زمان می‌برد."}
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               {user ? (
@@ -441,11 +441,11 @@ export default function Landing({
                 </Link>
               ) : (
                 <Link to="/signup" className={primaryBtn}>
-                  ساخت حساب
+                  ایجاد حساب کاربری
                 </Link>
               )}
               <Link to="/auctions" className={outlineBtn}>
-                دیدن مزایده‌ها
+                مشاهده‌ی مزایده‌ها
               </Link>
             </div>
           </div>
@@ -454,7 +454,7 @@ export default function Landing({
 
       <footer className="border-t border-line bg-surface">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-sm text-muted">
-          <span>© مزایده‌گاه • پروژه‌ی درس طراحی واسط کاربری</span>
+          <span>© اوج‌بها • پروژه‌ی درس طراحی واسط کاربری</span>
           <a
             href="https://github.com/Sajjad-008"
             target="_blank"
