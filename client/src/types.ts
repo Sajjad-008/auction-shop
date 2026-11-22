@@ -5,7 +5,7 @@ export type CategoryKey =
   | "art"
   | "cars";
 
-export type Role = "buyer" | "seller";
+export type Role = "buyer" | "seller" | "admin";
 
 export interface Bid {
   user: string;

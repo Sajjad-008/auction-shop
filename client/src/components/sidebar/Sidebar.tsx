@@ -16,6 +16,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { categories } from "../../data/categories";
 import type { User } from "../../types";
+import { roleLabels } from "../../utils/paths";
 
 interface ItemProps {
   to: string;
@@ -219,7 +220,7 @@ export default function Sidebar({
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-bold">{user.name}</p>
                 <p className="text-xs font-medium text-primary">
-                  {isSeller ? "حساب فروشنده" : "حساب خریدار"}
+                  {`حساب ${roleLabels[user.role]}`}{" "}
                 </p>
               </div>
               <button

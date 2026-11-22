@@ -24,6 +24,7 @@ import { initialNotifications } from "./data/notifications";
 import { autoReplies } from "./data/ticketCategories";
 import { getMinNextBid, isEnded, formatToman, ME } from "./utils/auction";
 import { faNum } from "./utils/ticket";
+import AdminHome from "./pages/admin/AdminHome";
 import type {
   Account,
   AppNotification,
@@ -253,11 +254,16 @@ export default function App() {
     );
 
   const placeBid = (id: number, amount: number): BidResult => {
-    if (!user) return { ok: false, message: "برای ثبت پیشنهاد، ابتدا وارد حساب کاربری شوید." };
+    if (!user)
+      return {
+        ok: false,
+        message: "برای ثبت پیشنهاد، ابتدا وارد حساب کاربری شوید.",
+      };
     if (user.role === "seller")
       return {
         ok: false,
-        message: "حساب فروشنده امکان ثبت پیشنهاد ندارد. با حساب خریدار وارد شوید.",
+        message:
+          "حساب فروشنده امکان ثبت پیشنهاد ندارد. با حساب خریدار وارد شوید.",
       };
     const a = auctions.find((x) => x.id === id);
     if (!a) return { ok: false, message: "مزایده یافت نشد." };
@@ -266,7 +272,8 @@ export default function App() {
     if (a.bids[0]?.user === ME)
       return {
         ok: false,
-        message: "آخرین پیشنهاد متعلق به شماست. لطفاً تا ثبت پیشنهاد بعدی منتظر بمانید.",
+        message:
+          "آخرین پیشنهاد متعلق به شماست. لطفاً تا ثبت پیشنهاد بعدی منتظر بمانید.",
       };
     const min = getMinNextBid(a);
     if (amount < min)
@@ -411,6 +418,14 @@ export default function App() {
           element={
             <RoleGuard role="seller">
               <NewAuction />
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/admin/*"
+          element={
+            <RoleGuard role="admin">
+              <AdminHome />
             </RoleGuard>
           }
         />

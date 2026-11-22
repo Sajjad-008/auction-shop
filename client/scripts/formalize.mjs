@@ -6,7 +6,7 @@ const brandIdx = process.argv.indexOf("--brand");
 const OLD_BRAND = "مزایده‌گاه";
 const NEW_BRAND = brandIdx > -1 ? process.argv[brandIdx + 1] : "اوج‌بها";
 
-const L = "\\u0600-\\u06FF\\u200c";
+const L = "\\u0621-\\u064A\\u067E\\u0686\\u0698\\u06A9\\u06AF\\u06CC\\u200c";
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 const walk = (dir) =>
