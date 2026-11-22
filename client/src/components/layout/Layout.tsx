@@ -41,6 +41,7 @@ export default function Layout({
   if (pathname === "/seller") title = "داشبورد فروشنده";
   else if (pathname === "/seller/auctions") title = "مزایده‌های من";
   else if (pathname === "/seller/new") title = "ساخت مزایده‌ی جدید";
+  else if (pathname.startsWith("/admin")) title = "پنل مدیریت";
   else if (pathname === "/active") title = "مزایده‌های فعال";
   else if (pathname === "/my-bids") title = "پیشنهادهای من";
   else if (pathname === "/favorites") title = "علاقه‌مندی‌ها";
