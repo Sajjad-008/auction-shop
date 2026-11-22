@@ -216,7 +216,7 @@ export default function Landing({
               مزایده‌ی آنلاین
             </span>
             <h1 className="text-4xl font-bold leading-tight sm:text-5xl">
-              پیشنهاد بده، <span className="text-primary">برنده شوید</span>
+              پیشنهاد بده، <span className="text-primary">برنده شو</span>
             </h1>
             <p className="max-w-xl text-lg leading-8 text-muted">
               تایمر زنده، قیمت‌های شفاف و تاریخچه‌ی کامل پیشنهادها. توی اوج‌بها
