@@ -81,7 +81,8 @@ Status values: **Done-UI** (frontend, simulated) · **Planned**.
 | FR-ID-003 | After login the user shall return to the page they came from, otherwise to their role's home. | Done-UI |
 | FR-ID-004 | The server shall authenticate users, hash passwords, and read the role from the session. | Planned (F-012) |
 | FR-ID-005 | The system shall support e-mail verification and password reset. | Planned (decision §13) |
-| FR-ID-006 | Routes and API endpoints shall be restricted by role; a wrong role shall see an explanatory message / receive 403. | Done-UI; server Planned |
+| FR-ID-006 | Routes and API endpoints shall be restricted by role. A guest is redirected to login; a logged-in user with the wrong role sees the access-denied (403) page; the API returns `403`. | UI Planned (F-024); server Planned (F-012) |
+| FR-ID-007 | The UI shall never offer administrator sign-up. Administrator accounts are created only on the server. | Planned (F-012, F-019) |
 
 ### 5.2 Discovery (visitor, buyer)
 | ID | Requirement | Status |
@@ -91,7 +92,7 @@ Status values: **Done-UI** (frontend, simulated) · **Planned**.
 | FR-DS-003 | The *Active* page shall offer filters (ending soon, competitive, price range) and a sort control with distinct meanings. | Done-UI |
 | FR-DS-004 | Search shall match title and description (multi-word, Persian letter normalization) and may be limited to one category. | Done-UI |
 | FR-DS-005 | The detail page shall show image, description, current price, bid count, live countdown (red in the last 5 minutes), price-history chart, and masked bid history. | Done-UI |
-| FR-DS-006 | Unknown URLs shall show a 404 page with navigation options. | Planned (F-010) |
+| FR-DS-006 | Unknown URLs shall show a 404 page with navigation options (home, auctions, own panel, back). | Done-UI (F-010) |
 
 ### 5.3 Buyer
 | ID | Requirement | Status |
@@ -121,6 +122,7 @@ Status values: **Done-UI** (frontend, simulated) · **Planned**.
 | FR-AD-003 | An administrator shall reply to and close support tickets. |
 | FR-AD-004 | An administrator shall configure platform limits (minimum start price, minimum step, allowed durations, categories). |
 | FR-AD-005 | Privileged actions shall be written to an audit log. |
+| FR-AD-006 | Every `/admin/*` route shall be reachable only by administrators; other logged-in users see the 403 page (placeholder admin page in F-024, real panel in F-019). |
 
 ### 5.6 Support
 | ID | Requirement | Status |
@@ -192,7 +194,7 @@ Payments and escrow, shipping, reserve price and "buy it now", Dutch/sealed-bid 
 ## 12. Traceability
 | Requirement group | Tasks |
 |---|---|
-| FR-ID | F-003 (UI), F-012 |
+| FR-ID | F-003 (UI), F-012, F-024 |
 | FR-DS | F-002, F-010, F-013 |
 | FR-BY | F-004, F-005, F-014, F-016 |
 | FR-SL | F-008, F-015 |
