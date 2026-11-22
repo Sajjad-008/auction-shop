@@ -219,8 +219,8 @@ export default function Landing({
               پیشنهاد بده، <span className="text-primary">برنده شوید</span>
             </h1>
             <p className="max-w-xl text-lg leading-8 text-muted">
-              تایمر زنده، قیمت‌های شفاف و تاریخچه‌ی کامل پیشنهادها. توی
-              اوج‌بها همه‌چیز جلوی چشم توئه.
+              تایمر زنده، قیمت‌های شفاف و تاریخچه‌ی کامل پیشنهادها. توی اوج‌بها
+              همه‌چیز جلوی چشم توئه.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
