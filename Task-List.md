@@ -55,8 +55,8 @@ All baseline features are documented together in `docs/features/BASELINE-fronten
 
 | ID | Feature / Workstream | Priority | Status | Dependencies | Specification | Plan |
 |---|---|---:|---|---|---|---|
-| F-009 | Test tooling and characterization tests for baseline logic (Vitest, React Testing Library; Playwright smoke test) | P0 | Proposed | F-001 | `docs/features/F-009-test-foundation/SPEC.md` | `…/PLAN.md` |
-| F-010 | Custom 404 page for unknown routes | P1 | In Progress | F-001 | `docs/features/F-010-not-found-page/SPEC.md` | `docs/features/F-010-not-found-page/PLAN.md` |
+| F-009 | Test foundation: Vitest, React Testing Library, jest-dom; characterization tests for `utils/auction`, `utils/validation`, `utils/search` (Playwright is deferred to F-020) | P0 | In Progress | F-001 | `docs/features/F-009-test-foundation/SPEC.md` | `docs/features/F-009-test-foundation/PLAN.md` |
+| F-010 | Custom 404 page for unknown routes (simplified on 2026-11-22: no requested-path box, no search box) | P1 | In Progress | F-001, F-009 | `docs/features/F-010-not-found-page/SPEC.md` | `docs/features/F-010-not-found-page/PLAN.md` |
 | F-011 | Backend foundation: server skeleton, configuration, migrations, health endpoint, CI checks | P0 | Proposed | — | `docs/features/F-011-backend-foundation/SPEC.md` | `…/PLAN.md` |
 | F-012 | Identity and RBAC: registration, login, sessions, password hashing, roles from the server | P0 | Proposed | F-011 | `docs/features/F-012-identity-rbac/SPEC.md` | `…/PLAN.md` |
 | F-013 | Auction catalog API: list, filter, search, detail, bid history (masked names) | P1 | Proposed | F-011 | `docs/features/F-013-catalog-api/SPEC.md` | `…/PLAN.md` |
@@ -70,18 +70,21 @@ All baseline features are documented together in `docs/features/BASELINE-fronten
 | F-021 | Live price updates (polling first, then Server-Sent Events) | P2 | Proposed | F-014, F-020 | `docs/features/F-021-live-updates/SPEC.md` | `…/PLAN.md` |
 | F-022 | Production readiness: security review, backups, PostgreSQL migration validation, runbook | P0 | Proposed | F-011–F-020 | `docs/features/F-022-production-readiness/SPEC.md` | `…/PLAN.md` |
 | F-023 | Payments / escrow | P3 | Deferred | F-014 | — | — |
+| F-024 | Access-denied (403) page, `admin` role in the UI model, and `/admin/*` route guard with a placeholder page | P1 | In Progress | F-003, F-009 | `docs/features/F-024-access-denied-page/SPEC.md` | `docs/features/F-024-access-denied-page/PLAN.md` |
 
-SPEC/PLAN folders for F-009 and F-011–F-022 do not exist yet. Create each one **before** starting that task.
+SPEC/PLAN folders for F-011–F-023 (except F-023, which is deferred) do not exist yet. Create each one **before** starting that task.
 
 ## Current sprint
 
-| Task | Next action |
-|---|---|
-| F-010 | Implement the page following its SPEC/PLAN; add an automated test after F-009. |
-| F-009 | Write SPEC and PLAN, then set up tooling. This unlocks TDD for everything else. |
+| Order | Task | Next action |
+|---:|---|---|
+| 1 | F-009 | Install tooling, add the first characterization tests, run the mutation sanity check. |
+| 2 | F-024 | Strict TDD: write the failing tests first, then implement (the tooling exists after F-009). |
+| 3 | F-010 | Apply the simplification and add the first automated test (closes its recorded deviation). |
 
 ## Change log
 
 | Date | Change |
 |---|---|
 | 2026-11-21 | Workflow adopted. Baseline frontend registered retroactively (F-001–F-008). Backlog F-009–F-023 created. |
+| 2026-11-22 | F-009 and F-024 specified; F-010 scope simplified; ADR-0009 (frontend test stack) added; ADR-0004 addendum; SRS requirements FR-ID-006/007, FR-AD-006 updated. |

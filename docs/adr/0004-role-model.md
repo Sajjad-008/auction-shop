@@ -21,3 +21,8 @@ Each account has exactly one role chosen at sign-up: `buyer` or `seller`. An `ad
 
 ## References
 F-003, F-012, F-019.
+
+## Addendum (2026-11-22)
+- The UI role type now includes `admin` (F-024). A logged-in user whose role does not match a guarded route sees the access-denied (403) page; a guest is redirected to login.
+- Administrator accounts are never created through the UI. In the browser-only simulation they can be created manually for testing (documented in F-024 PLAN); real creation is server-side (F-012, F-019).
+- Rules for administrators placing bids are decided in F-019.
