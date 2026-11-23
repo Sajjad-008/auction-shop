@@ -25,6 +25,7 @@ import { autoReplies } from "./data/ticketCategories";
 import { getMinNextBid, isEnded, formatToman, ME } from "./utils/auction";
 import { faNum } from "./utils/ticket";
 import AdminHome from "./pages/admin/AdminHome";
+import NotFound from "./pages/NotFound";
 import type {
   Account,
   AppNotification,
@@ -430,6 +431,7 @@ export default function App() {
           }
         />
       </Route>
+      <Route path="*" element={<NotFound user={user} {...themeProps} />} />
     </Routes>
   );
 }
