@@ -1,9 +1,15 @@
 # Software Requirements Specification (SRS)
 
 **Product:** Ojbaha (اوج‌بها) — online auction platform  
-**Version:** 1.0 — requirements baseline  
-**Date:** 2026-11-21  
+**Version:** 1.1  
+**Date:** 2026-11-24  
 **Status:** Proposed. Product decisions in §13 need confirmation. Requirements marked *Done-UI* exist in the frontend only (simulated, ADR-0003); *Planned* ones do not exist yet.
+
+## Document history
+| Version | Date | Change |
+|---|---|---|
+| 1.0 | 2026-11-21 | Requirements baseline written from the existing frontend and the product plan. |
+| 1.1 | 2026-11-24 | Statuses synchronized after F-009, F-010, F-024. Added §14 (backend requirements) and §15 (implementation status). §13 now lists a recommended default for each open decision so backend work can start. |
 
 ## 1. Introduction
 
@@ -81,8 +87,8 @@ Status values: **Done-UI** (frontend, simulated) · **Planned**.
 | FR-ID-003 | After login the user shall return to the page they came from, otherwise to their role's home. | Done-UI |
 | FR-ID-004 | The server shall authenticate users, hash passwords, and read the role from the session. | Planned (F-012) |
 | FR-ID-005 | The system shall support e-mail verification and password reset. | Planned (decision §13) |
-| FR-ID-006 | Routes and API endpoints shall be restricted by role. A guest is redirected to login; a logged-in user with the wrong role sees the access-denied (403) page; the API returns `403`. | UI Planned (F-024); server Planned (F-012) |
-| FR-ID-007 | The UI shall never offer administrator sign-up. Administrator accounts are created only on the server. | Planned (F-012, F-019) |
+| FR-ID-006 | Routes and API endpoints shall be restricted by role. A guest is redirected to login; a logged-in user with the wrong role sees the access-denied (403) page; the API returns `403`. | Done-UI (F-024); server Planned (F-012) |
+| FR-ID-007 | The UI shall never offer administrator sign-up. Administrator accounts are created only on the server. | Done-UI (F-024); server Planned (F-012, F-019) |
 
 ### 5.2 Discovery (visitor, buyer)
 | ID | Requirement | Status |
@@ -122,7 +128,7 @@ Status values: **Done-UI** (frontend, simulated) · **Planned**.
 | FR-AD-003 | An administrator shall reply to and close support tickets. |
 | FR-AD-004 | An administrator shall configure platform limits (minimum start price, minimum step, allowed durations, categories). |
 | FR-AD-005 | Privileged actions shall be written to an audit log. |
-| FR-AD-006 | Every `/admin/*` route shall be reachable only by administrators; other logged-in users see the 403 page (placeholder admin page in F-024, real panel in F-019). |
+| FR-AD-006 | Every `/admin/*` route shall be reachable only by administrators; other logged-in users see the 403 page (placeholder admin page Done in F-024, real panel in F-019). |
 
 ### 5.6 Support
 | ID | Requirement | Status |
@@ -205,13 +211,123 @@ Payments and escrow, shipping, reserve price and "buy it now", Dutch/sealed-bid 
 | NFR | F-009, F-022 |
 
 ## 13. Product decisions requiring confirmation
-1. Is payment part of the first release, or does the platform only connect buyer and seller?
-2. Is there an auto-extension ("anti-sniping") rule when a bid arrives in the last minutes? (The earlier Figma draft showed one.)
-3. Must an administrator approve a seller or an auction before publishing?
-4. May one account be both buyer and seller?
-5. Are reserve price or "buy it now" needed?
-6. What happens after an auction ends (contact, payment, delivery)?
-7. Jalali calendar display?
-8. Is e-mail verification mandatory?
-9. Can an auction be scheduled to start in the future?
-10. Where are images stored (server disk or object storage)?
+
+Work does not have to wait for these answers. The **recommended default** is what the team builds unless the instructor or product owner decides otherwise. Changing a default later costs the task named in the last column.
+
+| # | Decision | Recommended default | Affects |
+|---|---|---|---|
+| 1 | Is payment part of the first release? | No. The platform shows the outcome only; no money moves (F-023 stays Deferred). | F-014, F-023 |
+| 2 | Auto-extension ("anti-sniping") near the end? | No. The end time is fixed. Revisit after the bidding core is stable. | F-014 |
+| 3 | Must an administrator approve a seller or an auction before publishing? | No. Administrators can remove an auction afterwards (FR-AD-002). | F-015, F-019 |
+| 4 | May one account be both buyer and seller? | No (ADR-0004). A person uses two accounts. | F-012 |
+| 5 | Reserve price or "buy it now"? | Not in the first release. | F-014, F-015 |
+| 6 | What happens after an auction ends? | Winner and seller get notifications; arranging delivery and payment happens outside the platform. | F-017 |
+| 7 | Jalali calendar display? | Deferred; relative times are shown. | F-020 |
+| 8 | Is e-mail verification mandatory? | No in the first release; password reset deferred (no mail provider). | F-012 |
+| 9 | Can an auction be scheduled to start in the future? | No. It starts when created. | F-015 |
+| 10 | Where are images stored? | Server local disk behind a storage adapter (object storage can replace it later). | F-015 |
+| 11 | Which backend stack? | Node.js + TypeScript + Express + Kysely (ADR-0006, proposed). | F-011 |
+
+## 14. Backend requirements (derived)
+
+Server-side requirements that make the planned functional requirements real. IDs use the prefix `BE-`. Every requirement is **Planned** and implemented with the workflow in `AGENTS.md` (SPEC and PLAN first, tests first).
+
+### 14.1 Platform
+| ID | Requirement | Task |
+|---|---|---|
+| BE-SYS-001 | The API shall live under `/api/v1`, use JSON and UTF-8. | F-011 |
+| BE-SYS-002 | `GET /api/v1/health` shall report service and database status without exposing internals. | F-011 |
+| BE-SYS-003 | Configuration shall come from environment variables validated at startup; invalid configuration stops the process with a clear message. | F-011 |
+| BE-SYS-004 | Every error shall use one envelope `{ code, message, requestId }`; messages are Persian and formal; unexpected errors shall never leak stack traces. | F-011 |
+| BE-SYS-005 | Every response shall carry a request ID (`X-Request-Id`); logs shall be structured and shall never contain passwords or tokens. | F-011 |
+| BE-SYS-006 | The schema shall change only through versioned migrations that run on SQLite and PostgreSQL; a seed script shall reproduce the frontend sample data. | F-011, F-013 |
+| BE-SYS-007 | CORS shall allow only the configured frontend origin. | F-011 |
+
+### 14.2 Identity and access
+| ID | Requirement | Task |
+|---|---|---|
+| BE-ID-001 | Registration shall accept only roles `buyer` and `seller`; an `admin` role in the request shall be rejected. | F-012 |
+| BE-ID-002 | E-mail shall be unique, compared case-insensitively. | F-012 |
+| BE-ID-003 | Passwords shall be stored as salted hashes (Argon2id or bcrypt) and never returned. | F-012 |
+| BE-ID-004 | Login failures shall use one message for unknown e-mail and wrong password. | F-012 |
+| BE-ID-005 | Sessions shall use an `HttpOnly`, `SameSite` cookie (`Secure` in production); logout shall invalidate it. | F-012 |
+| BE-ID-006 | Login and registration shall be rate-limited. | F-012 |
+| BE-ID-007 | Administrators shall be created only by a seed or command-line script, never through the API. | F-012, F-019 |
+| BE-ID-008 | Every protected endpoint shall check authentication, role, and (where relevant) ownership; wrong role returns `403`, a missing resource `404`. | F-012 |
+
+### 14.3 Catalog
+| ID | Requirement | Task |
+|---|---|---|
+| BE-AUC-001 | The list endpoint shall support category, text query, status (running/ended), price range, sorting (end time, price, bid count), and pagination. | F-013 |
+| BE-AUC-002 | Text search shall normalize Persian/Arabic letter variants like the frontend does. | F-013 |
+| BE-AUC-003 | The detail endpoint shall return current price, bid count, minimum next bid, and bid history with masked bidder names. | F-013 |
+| BE-AUC-004 | "Ended" shall be computed on the server from the server clock. | F-013 |
+
+### 14.4 Bidding
+| ID | Requirement | Task |
+|---|---|---|
+| BE-BID-001 | Placing a bid shall run in one transaction with a compare-and-set update (ADR-0007). | F-014 |
+| BE-BID-002 | Rejections shall use stable codes: `AUCTION_NOT_FOUND`, `AUCTION_ENDED`, `BID_TOO_LOW`, `ALREADY_HIGHEST`, `ROLE_NOT_ALLOWED`; `BID_TOO_LOW` shall include the current minimum. | F-014 |
+| BE-BID-003 | An `Idempotency-Key` header shall make retries return the original result without a second bid. | F-014 |
+| BE-BID-004 | Bids are immutable; `(auction_id, amount)` shall be unique. | F-014 |
+| BE-BID-005 | N parallel bids with the same minimum amount shall produce exactly one success (PostgreSQL test). | F-014 |
+| BE-BID-006 | Bid placement shall be rate-limited per user. | F-014 |
+
+### 14.5 Seller management
+| ID | Requirement | Task |
+|---|---|---|
+| BE-SEL-001 | Creation shall validate title, description, base price, step, duration preset and apply BR-009; `end_at` is computed by the server. | F-015 |
+| BE-SEL-002 | Image upload shall accept JPEG, PNG, WebP up to 1 MB, check the content type, and store under a random name. | F-015 |
+| BE-SEL-003 | A seller shall list only own auctions and delete only own auctions without bids (`AUCTION_HAS_BIDS` otherwise). | F-015 |
+
+### 14.6 Buyer engagement
+| ID | Requirement | Task |
+|---|---|---|
+| BE-FAV-001 | A buyer shall add, remove, and list favorites; duplicates are ignored. | F-016 |
+| BE-MYB-001 | "My bids" shall return the status (leading, outbid, won, lost) computed on the server. | F-016 |
+
+### 14.7 Notifications and background work
+| ID | Requirement | Task |
+|---|---|---|
+| BE-NOT-001 | The API shall list, count unread, mark read (one/all), and delete notifications of the current user only. | F-017 |
+| BE-NOT-002 | Events: bid accepted, outbid (previous leader), ending soon, auction closed (winner and seller). | F-017 |
+| BE-NOT-003 | Notifications shall be created after the transaction commits. | F-017 |
+| BE-JOB-001 | A scheduler shall close ended auctions exactly once; running it twice shall not duplicate results. | F-017 |
+
+### 14.8 Support
+| ID | Requirement | Task |
+|---|---|---|
+| BE-SUP-001 | Users shall create tickets (category, title, message, ≤ 2 images) and see only their own. | F-018 |
+| BE-SUP-002 | Users shall add messages and close or reopen their tickets. | F-018 |
+| BE-SUP-003 | Administrators shall reply to any ticket; the reply creates a notification. | F-018 |
+
+### 14.9 Administration
+| ID | Requirement | Task |
+|---|---|---|
+| BE-ADM-001 | Administrators shall list, search, suspend, and reactivate users; suspended users cannot log in. | F-019 |
+| BE-ADM-002 | Administrators shall remove an auction with a recorded reason. | F-019 |
+| BE-ADM-003 | Every privileged action shall be written to an audit log with actor, action, target, and time. | F-019 |
+| BE-ADM-004 | Platform limits (BR-009) shall be configurable by administrators. | F-019 |
+
+### 14.10 Quality
+| ID | Requirement | Task |
+|---|---|---|
+| BE-QA-001 | Every module shall have unit and integration tests; rules are tested before they are implemented. | all |
+| BE-QA-002 | Concurrency and migration tests shall run on PostgreSQL. | F-014, F-022 |
+| BE-QA-003 | Request and response shapes shall match the shared types or a published schema. | F-020 |
+
+## 15. Implementation status (2026-11-24)
+
+| Area | Frontend (simulated) | Server | Automated tests |
+|---|---|---|---|
+| Identity and roles | Done-UI (sign up, login, role guard, 403 page, admin placeholder) | none | guards and role helpers |
+| Catalog and search | Done-UI | none | rules, search, validation |
+| Bidding and "My bids" | Done-UI | none | rules (minimum bid, status) |
+| Favorites | Done-UI | none | none |
+| Notifications | Done-UI | none | none |
+| Support tickets | Done-UI (auto-replies are simulated) | none | none |
+| Seller panel | Done-UI | none | none |
+| Administration | placeholder page only | none | guard only |
+| Error pages (404, 403) | Done-UI | not applicable | component tests |
+
+The next work is the backend (F-011 onward). The frontend stays on its simulation layer until F-020.
